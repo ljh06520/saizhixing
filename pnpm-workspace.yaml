@@ -1,0 +1,3 @@
+﻿# Keep a flat node_modules (npm-style) because Node on this machine cannot
+# resolve pnpm junction links (Next would fail: Cannot find module styled-jsx).
+nodeLinker: hoisted
