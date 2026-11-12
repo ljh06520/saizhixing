@@ -2,14 +2,17 @@
  * 文档处理工具：读取文本文件 + 把长文切成 300–500 字的小块。
  *
  * 这里只做纯文本处理，不依赖 React 和网络，方便单独测试。
- * 阶段 3 会把这些小块拿去做向量检索，所以每块要尽量语义完整、长度接近。
+ * 阶段 3 会把这些小块拿去做向量检索，所以每块要尽量语义完整、长度接近，
+ * 相邻块之间还要留一点重叠，避免答案刚好跨在两块中间时丢上下文。
  */
 
 // 单个文件最大 2 MB，防止浏览器读入超大文件后卡死
 export const MAX_FILE_SIZE = 2 * 1024 * 1024;
-// 每段最少 / 最少的字数（中文一个字算一个字符）
+// 每块的字数范围（中文一个字算一个字符）
 export const CHUNK_MIN = 300;
 export const CHUNK_MAX = 500;
+// 相邻块重复的上下文字数；它会计入每块的 500 字上限
+export const CHUNK_OVERLAP = 50;
 
 // 只支持纯文本和 Markdown
 export const SUPPORTED_EXTENSIONS = ['.txt', '.md', '.markdown'];
@@ -23,8 +26,18 @@ export interface TextChunk {
   charCount: number;
 }
 
-/** 句子结束符：在这些字符后面切开，段落换行也算一个天然边界 */
+/** 句子结束符：按这些字符切句，换行也算天然边界 */
 const SENTENCE_END = new Set(['。', '！', '？', '!', '?', '；', ';', '…', '\n']);
+
+/** Markdown 标题行：行首最多 3 个空格，1–6 个 #，后面必须有空格 */
+const HEADING_LINE = /^ {0,3}#{1,6}[ \t]+\S/;
+
+/** 切块过程中的中间结构 */
+interface Block {
+  text: string;
+  /** 这一块是否以 Markdown 标题开头（标题不跟上一段挤在一起） */
+  isHeading: boolean;
+}
 
 /** 判断扩展名是否支持（不看 MIME 类型，因为不同系统给的 MIME 经常不准） */
 export function isSupportedFile(file: File): boolean {
@@ -85,18 +98,20 @@ export function normalizeText(raw: string): string {
 }
 
 /**
- * 把整篇文档切成若干块，每块尽量在 300–500 字之间。
+ * 把整篇文档切成若干块，每块 300–500 字，相邻块重叠约 50 字。
  *
- * 步骤：
- * 1. 按空行拆成段落；
- * 2. 太长的段落先按句子切开，保证没有一段超过 500 字；
- * 3. 把段落依次拼起来：不足 300 字就继续拼，超过 500 字之前切开；
- * 4. 最后把过短的尾块并进前一块。
+ * 优先级（从高到低）：
+ * 1. 空行分段（\n\s*\n），Markdown 标题行也强制另起一段；
+ * 2. 相邻短段合并，目标每块 300–500 字；
+ * 3. 单段超过 500 字时，按 。！？；换行 切开；
+ * 4. 整段一个标点都没有时，才硬切；
+ * 5. 相邻块加上约 50 字重叠（标题块也照样加）。
  */
 export function splitIntoChunks(
   raw: string,
   min = CHUNK_MIN,
   max = CHUNK_MAX,
+  overlap = CHUNK_OVERLAP,
 ): TextChunk[] {
   const text = normalizeText(raw);
 
@@ -104,47 +119,107 @@ export function splitIntoChunks(
     return [];
   }
 
-  // 很短的文档直接作为一块，不必硬凑 300 字
+  // 整篇就很短时直接一块，不必硬凑 300 字，也谈不上重叠
   if (text.length <= max) {
-    return [{ id: 'chunk-0', index: 0, content: text, charCount: text.length }];
+    return [createChunk(text, 0)];
   }
 
-  // 1. 先按空行拆段，再处理超长段落
-  const blocks: string[] = [];
-  for (const paragraph of text.split(/\n{2,}/)) {
+  // 每块正文最多 449 字：预留 50 字重叠 + 1 个换行，加完重叠也不超过 500
+  const bodyMax = Math.max(min, max - overlap - 1);
+
+  // 1 + 3：先按空行和标题行分块，超长块再按标点切开
+  const blocks = splitIntoBlocks(text).flatMap((block) =>
+    splitLongBlock(block, bodyMax),
+  );
+
+  // 2 + 4：拼到 300–bodyMax，再合并过短块、微调最后一块
+  const grouped = groupBlocks(blocks, min, bodyMax);
+  const merged = mergeShortChunks(grouped, min, bodyMax);
+  const balanced = rebalanceLastChunk(merged, min, bodyMax);
+
+  // 5：相邻块加上重叠
+  const overlapped = applyOverlap(
+    balanced.map((chunk) => chunk.trim()).filter(Boolean),
+    overlap,
+    max,
+  );
+
+  return overlapped.map((content, index) => createChunk(content, index));
+}
+
+function createChunk(content: string, index: number): TextChunk {
+  return {
+    id: `chunk-${index}`,
+    index,
+    content,
+    charCount: content.length,
+  };
+}
+
+/** 第一步：空行 + Markdown 标题行 → 若干 Block */
+function splitIntoBlocks(text: string): Block[] {
+  const blocks: Block[] = [];
+
+  // 空行分段：两个换行之间允许有空格/制表符
+  for (const paragraph of text.split(/\n\s*\n/)) {
     const trimmed = paragraph.trim();
     if (trimmed) {
-      blocks.push(...splitLongBlock(trimmed, max));
+      blocks.push(...splitAtHeadings(trimmed));
     }
   }
 
-  // 2. 依次拼块，3. 合并过短的小块，4. 微调最后一块
-  const grouped = groupBlocks(blocks, min, max);
-  const merged = mergeShortChunks(grouped, min, max);
-  const balanced = rebalanceLastChunk(merged, min, max);
-
-  return balanced
-    .map((content) => content.trim())
-    .filter(Boolean)
-    .map((content, index) => ({
-      id: `chunk-${index}`,
-      index,
-      content,
-      charCount: content.length,
-    }));
+  return blocks;
 }
 
-/** 段落本身超过 max 时，按句子切成不超过 max 的小段 */
-function splitLongBlock(block: string, max: number): string[] {
-  if (block.length <= max) {
+/**
+ * 把一段文字在 Markdown 标题行前切开。
+ * 标题和它后面的正文留在同一个 Block 里，避免标题跟正文被拆散。
+ * 例如「正文…\n## 标题\n标题下的文字」会切成：
+ * [{ text: '正文…' }, { text: '## 标题\n标题下的文字', isHeading: true }]
+ */
+function splitAtHeadings(paragraph: string): Block[] {
+  const lines = paragraph.split('\n');
+  const blocks: Block[] = [];
+  let current: string[] = [];
+  let currentIsHeading = false;
+
+  const flush = () => {
+    const text = current.join('\n').trim();
+    if (text) {
+      blocks.push({ text, isHeading: currentIsHeading });
+    }
+    current = [];
+    currentIsHeading = false;
+  };
+
+  for (const line of lines) {
+    if (HEADING_LINE.test(line)) {
+      flush();
+      current = [line];
+      currentIsHeading = true;
+    } else {
+      current.push(line);
+    }
+  }
+  flush();
+
+  return blocks;
+}
+
+/**
+ * 单个 Block 超过 max 时按句子切开：
+ * 优先在 。！？；换行 处切；只有一整句都没有标点时才硬切。
+ */
+function splitLongBlock(block: Block, max: number): Block[] {
+  if (block.text.length <= max) {
     return [block];
   }
 
   const pieces: string[] = [];
   let buffer = '';
 
-  for (const sentence of splitSentences(block)) {
-    // 一句话就超过 max（比如没有标点的长串），只能硬切
+  for (const sentence of splitSentences(block.text)) {
+    // 一整句（中间没有任何标点）就超过 max，只能硬切
     if (sentence.length > max) {
       if (buffer) {
         pieces.push(buffer);
@@ -170,7 +245,14 @@ function splitLongBlock(block: string, max: number): string[] {
     pieces.push(buffer);
   }
 
-  return pieces.map((piece) => piece.trim()).filter(Boolean);
+  return pieces
+    .map((piece) => piece.trim())
+    .filter(Boolean)
+    .map((text, index) => ({
+      text,
+      // 只有切开后的第一段还保留“以标题开头”的身份
+      isHeading: index === 0 && block.isHeading,
+    }));
 }
 
 /** 按中文/英文标点和换行把一段文字切成句子，标点跟着前一句走 */
@@ -194,17 +276,30 @@ function splitSentences(text: string): string[] {
 }
 
 /**
- * 把段落拼成块：
+ * 把 Block 拼成块：
  * - 能放下就继续放；
  * - 放不下且当前块已经有 300 字，就在段落边界切开；
- * - 当前块还太短时，从下一段开头切一小段补进来，避免出现很碎的块。
+ * - 当前块还太短时，从下一段开头切一小段补进来，避免出现很碎的块；
+ * - 标题不跟前面已经够长的内容挤在同一块里，避免标题孤零零挂在块尾。
  */
-function groupBlocks(blocks: string[], min: number, max: number): string[] {
+function groupBlocks(blocks: Block[], min: number, max: number): string[] {
   const chunks: string[] = [];
   let buffer = '';
 
+  const flush = () => {
+    if (buffer) {
+      chunks.push(buffer);
+      buffer = '';
+    }
+  };
+
   for (const block of blocks) {
-    let rest = block;
+    // 标题行是硬边界：前面内容已经够长，就先收尾，让标题从下一块开头出现
+    if (block.isHeading && buffer.length >= min) {
+      flush();
+    }
+
+    let rest = block.text;
 
     while (rest.length > 0) {
       const separator = buffer ? '\n\n' : '';
@@ -216,48 +311,46 @@ function groupBlocks(blocks: string[], min: number, max: number): string[] {
       }
 
       if (buffer.length >= min) {
-        chunks.push(buffer);
-        buffer = '';
+        flush();
         continue;
       }
 
-      // 当前块太短：从 rest 里切一段补到接近 max，尽量在句子边界切
+      // 当前块太短：从 rest 里切一段补到接近 max，尽量在标点处切
       const room = max - buffer.length - separator.length;
       const piece = cutAtBoundary(rest, room);
       buffer += separator + piece;
       rest = rest.slice(piece.length).replace(/^\s+/, '');
 
       if (buffer.length >= min) {
-        chunks.push(buffer);
-        buffer = '';
+        flush();
       }
     }
   }
 
-  if (buffer) {
-    chunks.push(buffer);
-  }
+  flush();
 
   return chunks;
 }
 
-/** 在 maxLength 以内找一个尽量自然的切点（句号、分号、空格），找不到就硬切 */
+/**
+ * 在 maxLength 以内找最靠后的自然切点（标点优先，其次空格）。
+ * 只有整段都找不到标点和空格时，才在 maxLength 处硬切。
+ */
 function cutAtBoundary(text: string, maxLength: number): string {
   if (text.length <= maxLength) {
     return text;
   }
 
   const window = text.slice(0, maxLength);
-  const earliestCut = Math.floor(maxLength * 0.6);
 
-  for (let i = window.length - 1; i >= earliestCut; i -= 1) {
+  for (let i = window.length - 1; i >= 0; i -= 1) {
     if (SENTENCE_END.has(window[i])) {
       return window.slice(0, i + 1);
     }
   }
 
   const spaceIndex = window.lastIndexOf(' ');
-  if (spaceIndex >= earliestCut) {
+  if (spaceIndex > 0) {
     return window.slice(0, spaceIndex + 1);
   }
 
@@ -347,4 +440,29 @@ function findCutFromEnd(text: string, minMove: number, maxMove: number): number 
   }
 
   return upper; // 找不到自然边界就硬切
+}
+
+/**
+ * 相邻块重叠：把上一块最后 overlap 个字接到下一块开头。
+ * 这样即使答案刚好跨在两块中间，检索时也能拿到完整上下文。
+ * 第一块没有上一块，所以不加；如果加了会超过 max（理论上不会），就放弃这部分重叠。
+ */
+function applyOverlap(chunks: string[], overlap: number, max: number): string[] {
+  if (overlap <= 0 || chunks.length < 2) {
+    return chunks;
+  }
+
+  return chunks.map((chunk, index) => {
+    if (index === 0) {
+      return chunk;
+    }
+
+    const prefix = chunks[index - 1].slice(-overlap).trim();
+    if (!prefix) {
+      return chunk;
+    }
+
+    const withOverlap = `${prefix}\n${chunk}`;
+    return withOverlap.length <= max ? withOverlap : chunk;
+  });
 }

@@ -5,6 +5,7 @@ import { useCallback, useRef, useState } from 'react';
 import {
   CHUNK_MAX,
   CHUNK_MIN,
+  CHUNK_OVERLAP,
   MAX_FILE_SIZE,
   normalizeText,
   readTextFile,
@@ -191,11 +192,13 @@ export default function DocumentsPage() {
             <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-xs leading-6 text-blue-900/80">
               <p className="font-medium text-blue-900">切块规则</p>
               <p className="mt-1">
-                先按空行分段；不足 {CHUNK_MIN} 字就继续拼，快超过 {CHUNK_MAX}{' '}
-                字时在句号处截断；超长段落按句子切开，过短的尾块并进前一段。
+                先按空行分段，Markdown 标题行会强制另起一段；相邻短段合并到{' '}
+                {CHUNK_MIN}–{CHUNK_MAX} 字；单段超过 {CHUNK_MAX}{' '}
+                字时按 。！？； 切开，整段没有标点才硬切。
               </p>
               <p className="mt-1">
-                每段是阶段 3 检索的最小单位，所以尽量保持语义完整。
+                相邻块之间重叠约 {CHUNK_OVERLAP}{' '}
+                字，方便检索时接上被切断的上下文；每段仍是阶段 3 检索的最小单位。
               </p>
             </div>
           </>
@@ -257,7 +260,7 @@ function ChunkList({ chunks }: { chunks: TextChunk[] }) {
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-900">切块结果</h2>
         <span className="text-xs text-slate-500">
-          每段 {CHUNK_MIN}–{CHUNK_MAX} 字
+          每段 {CHUNK_MIN}–{CHUNK_MAX} 字 · 与上一段重叠约 {CHUNK_OVERLAP} 字
         </span>
       </div>
 
