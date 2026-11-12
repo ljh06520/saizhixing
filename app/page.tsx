@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useChat } from '@ai-sdk/react';
 
@@ -46,9 +47,17 @@ export default function Home() {
             <p className="text-xs text-slate-500">阶段 1 · 与 DeepSeek 流式对话</p>
           </div>
         </div>
-        <span className="hidden rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500 sm:inline">
-          deepseek-chat
-        </span>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="hidden rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500 sm:inline">
+            deepseek-chat
+          </span>
+          <Link
+            href="/documents"
+            className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 transition hover:border-blue-300 hover:text-blue-700"
+          >
+            📄 文档上传
+          </Link>
+        </div>
       </header>
 
       {/* 聊天记录区 */}
