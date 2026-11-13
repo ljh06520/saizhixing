@@ -85,26 +85,28 @@ function assertChunkSizes(chunks) {
   }
 }
 
-/** 第 2 块开始，开头必须是上一块最后 50 个字 */
+/** 相邻块只重叠完整句子，标题块必须保持标题在块首 */
 function assertOverlap(chunks) {
   for (let i = 1; i < chunks.length; i += 1) {
-    const prefix = chunks[i - 1].content.slice(-CHUNK_OVERLAP).trim();
-    assert.ok(prefix.length > 0, '重叠前缀不能为空');
-    assert.ok(
-      chunks[i].content.startsWith(`${prefix}\n`),
-      `第 ${i + 1} 块没有带上第 ${i} 块最后 ${CHUNK_OVERLAP} 字的重叠`,
-    );
+    const prefix = findOverlap(chunks[i - 1].content, chunks[i].content);
+    assert.ok(prefix.length <= CHUNK_OVERLAP, `第 ${i + 1} 块重叠超过 ${CHUNK_OVERLAP} 字`);
+    if (prefix) {
+      assert.ok(/[。！？；!?;…\n]$/.test(prefix), `第 ${i + 1} 块重叠不能截断句子`);
+    }
+    if (/^ {0,3}#{1,6}[ \t]+\S/.test(chunks[i].content)) {
+      assert.ok(chunks[i].content.startsWith('#'), `第 ${i + 1} 块标题必须位于块首`);
+    }
   }
 }
 
-/** 去掉重叠部分后拼回去，应该和原文一字不差（忽略空白差异） */
+/** 去掉实际重叠后拼回去，应该和原文一字不差（忽略空白差异） */
 function assertNoTextLoss(raw, chunks) {
   const rebuilt = chunks
     .map((chunk, index) => {
       if (index === 0) {
         return chunk.content;
       }
-      const prefix = chunks[index - 1].content.slice(-CHUNK_OVERLAP).trim();
+      const prefix = findOverlap(chunks[index - 1].content, chunk.content);
       return chunk.content.startsWith(`${prefix}\n`)
         ? chunk.content.slice(prefix.length + 1)
         : chunk.content;
@@ -112,6 +114,16 @@ function assertNoTextLoss(raw, chunks) {
     .join('');
 
   assert.equal(strip(rebuilt), strip(normalizeText(raw)), '切块后文字不能丢失或乱序');
+}
+
+function findOverlap(previous, current) {
+  for (let length = Math.min(CHUNK_OVERLAP, current.length); length >= 1; length -= 1) {
+    const prefix = current.slice(0, length);
+    if (current.startsWith(`${prefix}\n`) && previous.endsWith(prefix)) {
+      return prefix;
+    }
+  }
+  return '';
 }
 
 // ---------- 1. 多段落文档（含 Markdown 标题）----------

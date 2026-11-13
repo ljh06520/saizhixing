@@ -105,7 +105,7 @@ export function normalizeText(raw: string): string {
  * 2. 相邻短段合并，目标每块 300–500 字；
  * 3. 单段超过 500 字时，按 。！？；换行 切开；
  * 4. 整段一个标点都没有时，才硬切；
- * 5. 相邻块加上约 50 字重叠（标题块也照样加）。
+ * 5. 相邻块按完整句子增加不超过 50 字的重叠；标题块保持标题在块首。
  */
 export function splitIntoChunks(
   raw: string,
@@ -442,22 +442,18 @@ function findCutFromEnd(text: string, minMove: number, maxMove: number): number 
   return upper; // 找不到自然边界就硬切
 }
 
-/**
- * 相邻块重叠：把上一块最后 overlap 个字接到下一块开头。
- * 这样即使答案刚好跨在两块中间，检索时也能拿到完整上下文。
- * 第一块没有上一块，所以不加；如果加了会超过 max（理论上不会），就放弃这部分重叠。
- */
+/** 相邻块只复制完整句子，避免下一块从半句话开始。 */
 function applyOverlap(chunks: string[], overlap: number, max: number): string[] {
   if (overlap <= 0 || chunks.length < 2) {
     return chunks;
   }
 
   return chunks.map((chunk, index) => {
-    if (index === 0) {
+    if (index === 0 || HEADING_LINE.test(chunk)) {
       return chunk;
     }
 
-    const prefix = chunks[index - 1].slice(-overlap).trim();
+    const prefix = findSemanticOverlap(chunks[index - 1], overlap);
     if (!prefix) {
       return chunk;
     }
@@ -465,4 +461,21 @@ function applyOverlap(chunks: string[], overlap: number, max: number): string[] 
     const withOverlap = `${prefix}\n${chunk}`;
     return withOverlap.length <= max ? withOverlap : chunk;
   });
+}
+
+/** 从上一块末尾挑选完整句子，长度尽量接近 overlap 但绝不截断句子。 */
+function findSemanticOverlap(text: string, maxLength: number): string {
+  const candidates: string[] = [];
+
+  for (let start = 0; start < text.length; start += 1) {
+    if (start > 0 && !SENTENCE_END.has(text[start - 1]) && text[start - 1] !== '\n') {
+      continue;
+    }
+    const candidate = text.slice(start).trim();
+    if (candidate && candidate.length <= maxLength) {
+      candidates.push(candidate);
+    }
+  }
+
+  return candidates.sort((left, right) => right.length - left.length)[0] ?? '';
 }
