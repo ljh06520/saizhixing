@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { clearDocument, loadDocument, saveDocument } from '@/lib/document-store';
 import {
   CHUNK_MAX,
   CHUNK_MIN,
@@ -30,21 +31,70 @@ type PageState =
 export default function DocumentsPage() {
   const [state, setState] = useState<PageState>({ status: 'idle' });
   const [isDragging, setIsDragging] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(true);
+  const [isClearing, setIsClearing] = useState(false);
+  const busyRef = useRef(true);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // 首次进入页面时恢复上次保存的文档，恢复结束前禁止上传，避免覆盖竞态。
+  useEffect(() => {
+    let active = true;
+    void loadDocument()
+      .then((snapshot) => {
+        if (!active || !snapshot) return;
+        setState({
+          status: 'ready',
+          fileName: snapshot.document.name,
+          fileSize: snapshot.document.size,
+          charCount: snapshot.document.charCount,
+          chunks: snapshot.chunks,
+        });
+      })
+      .catch((error) => {
+        console.error('[documents] 恢复文档失败', error);
+        if (active) setState({ status: 'error', message: '读取本地文档失败，请检查浏览器是否允许使用 IndexedDB，然后刷新重试。' });
+      })
+      .finally(() => {
+        if (active) {
+          busyRef.current = false;
+          setIsRestoring(false);
+        }
+      });
+    return () => { active = false; };
+  }, []);
+
+  const handleClear = useCallback(async () => {
+    if (busyRef.current) return;
+    busyRef.current = true;
+    setIsClearing(true);
+    try {
+      await clearDocument();
+      setState({ status: 'idle' });
+    } catch (error) {
+      console.error('[documents] 清空文档失败', error);
+      setState({ status: 'error', message: '清空本地文档失败，数据可能仍保留在浏览器中，请刷新后重试。' });
+    } finally {
+      busyRef.current = false;
+      setIsClearing(false);
+    }
+  }, []);
 
   // 用隐藏的 <input type="file"> 打开系统选文件窗口
   const openFilePicker = useCallback(() => {
+    if (busyRef.current) return;
     inputRef.current?.click();
   }, []);
 
   // 读取 + 切块：全部在浏览器本地完成，文件不会上传到服务器
   const handleFile = useCallback(async (file: File) => {
+    if (busyRef.current) return;
     const validationError = validateFile(file);
     if (validationError) {
       setState({ status: 'error', message: validationError });
       return;
     }
 
+    busyRef.current = true;
     setState({ status: 'loading', fileName: file.name });
 
     try {
@@ -57,6 +107,7 @@ export default function DocumentsPage() {
         return;
       }
 
+      await saveDocument(file, normalized.length, chunks);
       setState({
         status: 'ready',
         fileName: file.name,
@@ -65,11 +116,13 @@ export default function DocumentsPage() {
         chunks,
       });
     } catch (error) {
-      console.error('[documents] 读取文件失败', error);
+      console.error('[documents] 读取或保存文件失败', error);
       setState({
         status: 'error',
-        message: '读取文件失败，请确认它是纯文本文件后重试。',
+        message: '读取或保存文件失败，请确认文件是纯文本，并检查浏览器存储权限与剩余空间后重试。',
       });
+    } finally {
+      busyRef.current = false;
     }
   }, []);
 
@@ -107,7 +160,7 @@ export default function DocumentsPage() {
           <div>
             <h1 className="text-base font-semibold text-slate-900">文档上传</h1>
             <p className="text-xs text-slate-500">
-              阶段 2 · 上传后切成 {CHUNK_MIN}–{CHUNK_MAX} 字的小段
+              阶段 3 · 本地保存 {CHUNK_MIN}–{CHUNK_MAX} 字的文档片段
             </p>
           </div>
         </div>
@@ -137,7 +190,7 @@ export default function DocumentsPage() {
                 role="alert"
                 className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
               >
-                <p className="font-medium">上传失败</p>
+                <p className="font-medium">文档处理失败</p>
                 <p className="mt-1 break-words text-xs leading-6 text-red-600">
                   {state.message}
                 </p>
@@ -149,7 +202,7 @@ export default function DocumentsPage() {
               tabIndex={0}
               onClick={state.status === 'loading' ? undefined : openFilePicker}
               onKeyDown={(event) => {
-                if (state.status === 'loading') return;
+                if (busyRef.current) return;
                 if (event.key === 'Enter' || event.key === ' ') {
                   event.preventDefault();
                   openFilePicker();
@@ -167,11 +220,11 @@ export default function DocumentsPage() {
                   : 'border-slate-300 bg-white hover:border-blue-400 hover:bg-blue-50/40'
               }`}
             >
-              {state.status === 'loading' ? (
+              {isRestoring || state.status === 'loading' ? (
                 <>
                   <span className="h-2.5 w-2.5 animate-ping rounded-full bg-blue-500" />
                   <p className="mt-4 text-sm text-slate-600">
-                    正在读取并切分「{state.fileName}」…
+                    {isRestoring ? '正在恢复本地文档…' : state.status === 'loading' ? `正在读取、切分并保存「${state.fileName}」…` : ''}
                   </p>
                 </>
               ) : (
@@ -225,17 +278,19 @@ export default function DocumentsPage() {
                 <div className="flex shrink-0 gap-2">
                   <button
                     type="button"
+                    disabled={isClearing}
                     onClick={openFilePicker}
                     className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-blue-700"
                   >
-                    换一个文件
+                    换一个文件（替换当前文档）
                   </button>
                   <button
                     type="button"
-                    onClick={() => setState({ status: 'idle' })}
+                    disabled={isClearing}
+                    onClick={() => void handleClear()}
                     className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100"
                   >
-                    清空
+                    {isClearing ? '正在清空…' : '清空本地文档'}
                   </button>
                 </div>
               </div>
@@ -247,7 +302,7 @@ export default function DocumentsPage() {
       </main>
 
       <footer className="border-t border-slate-200 py-4 text-center text-[11px] text-slate-400">
-        文件只在浏览器内存里处理 · 阶段 3 会存进 IndexedDB，刷新不丢
+        文件保存在当前浏览器的 IndexedDB 中 · 刷新可恢复 · 清除浏览器数据后会丢失
       </footer>
     </div>
   );
@@ -282,7 +337,7 @@ function ChunkList({ chunks }: { chunks: TextChunk[] }) {
       ))}
 
       <p className="pt-1 text-center text-[11px] text-slate-400">
-        当前只存在内存里，刷新页面会清空
+        已保存到当前浏览器，刷新页面可恢复；更换文件将替换当前文档
       </p>
     </section>
   );
