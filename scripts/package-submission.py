@@ -13,13 +13,14 @@ files = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--e
 archive = SOURCE / 'saizhixing-source.zip'
 with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as package:
     for name in files:
-        if not name or name.startswith('submission/source/') or name.endswith('.zip') or name == '.env.local' or '/__pycache__/' in name:
+        if not name or name.startswith('submission/source/') or name.endswith('.zip') or name in ('.env.local', 'submission/manifest.json') or '/__pycache__/' in name:
             continue
         path = ROOT / name
         if path.is_file():
             package.write(path, name)
 bundle = SOURCE / 'development-history.bundle'
-subprocess.run(['git', 'bundle', 'create', str(bundle), '--all'], cwd=ROOT, check=True)
+branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=ROOT, text=True).strip()
+subprocess.run(['git', 'bundle', 'create', str(bundle), 'main', branch], cwd=ROOT, check=True)
 manifest = []
 for path in sorted(OUT.rglob('*')):
     if path.is_file() and path.suffix != '.zip' and path.name != 'manifest.json':

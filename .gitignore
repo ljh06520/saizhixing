@@ -31,3 +31,4 @@ __pycache__/
 *.pyc
 /submission/source/
 /submission/*技术包*.zip
+/submission/manifest.json
