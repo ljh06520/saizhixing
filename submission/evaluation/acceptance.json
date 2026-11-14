@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-11-14T02:25:08.633Z",
+  "summary": "9/9组验收检查通过。规则/引用/隔离用例数量见verification.json；浏览器和模型检查单独归档。",
+  "passed": true,
+  "checks": [
+    {
+      "name": "typecheck",
+      "passed": true,
+      "elapsedMs": 1493
+    },
+    {
+      "name": "chunk",
+      "passed": true,
+      "elapsedMs": 339
+    },
+    {
+      "name": "legacy",
+      "passed": true,
+      "elapsedMs": 336
+    },
+    {
+      "name": "rules",
+      "passed": true,
+      "elapsedMs": 387
+    },
+    {
+      "name": "api",
+      "passed": true,
+      "elapsedMs": 438
+    },
+    {
+      "name": "storage",
+      "passed": true,
+      "elapsedMs": 341
+    },
+    {
+      "name": "secrets",
+      "passed": true,
+      "elapsedMs": 556
+    },
+    {
+      "name": "assets",
+      "passed": true,
+      "elapsedMs": 46
+    },
+    {
+      "name": "production",
+      "passed": true,
+      "elapsedMs": 15140
+    }
+  ]
+}

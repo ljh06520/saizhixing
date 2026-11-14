@@ -3,25 +3,35 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/prepare-assets.mjs",
+    "prebuild": "node scripts/prepare-assets.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "check:chunk": "node scripts/check-chunk.mjs"
+    "check:chunk": "node scripts/check-chunk.mjs",
+    "check:competition": "node scripts/check-competition.mjs",
+    "check:chat": "node scripts/check-chat.mjs",
+    "check:release": "node scripts/check-release.mjs",
+    "verify": "node scripts/verify.mjs",
+    "evaluate:model": "node scripts/evaluate-model.mjs"
   },
   "dependencies": {
     "@ai-sdk/deepseek": "0.2.16",
     "@ai-sdk/react": "1.2.12",
     "ai": "4.3.19",
     "next": "15.5.29",
+    "pdfjs-dist": "4.10.38",
     "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "react-dom": "19.1.1",
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
+    "fake-indexeddb": "6.2.4",
     "postcss": "^8.4.49",
     "tailwindcss": "3.4.19",
     "typescript": "^5.7.2"

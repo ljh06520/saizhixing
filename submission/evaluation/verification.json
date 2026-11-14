@@ -1,0 +1,225 @@
+{
+  "generatedAt": "2026-11-14T02:24:52.101Z",
+  "total": 54,
+  "passed": 54,
+  "failed": 0,
+  "summary": "54/54项确定性测试通过；测试资料为独立合成通知，不代表用户试用。",
+  "results": [
+    {
+      "name": "人数1-3下界",
+      "pass": true
+    },
+    {
+      "name": "人数1-3上界",
+      "pass": true
+    },
+    {
+      "name": "人数1-3越界",
+      "pass": true
+    },
+    {
+      "name": "人数2-5下界",
+      "pass": true
+    },
+    {
+      "name": "人数2-5上界",
+      "pass": true
+    },
+    {
+      "name": "人数2-5越界",
+      "pass": true
+    },
+    {
+      "name": "人数3-6下界",
+      "pass": true
+    },
+    {
+      "name": "人数3-6上界",
+      "pass": true
+    },
+    {
+      "name": "人数3-6越界",
+      "pass": true
+    },
+    {
+      "name": "人数2-4下界",
+      "pass": true
+    },
+    {
+      "name": "人数2-4上界",
+      "pass": true
+    },
+    {
+      "name": "人数2-4越界",
+      "pass": true
+    },
+    {
+      "name": "人数1-2下界",
+      "pass": true
+    },
+    {
+      "name": "人数1-2上界",
+      "pass": true
+    },
+    {
+      "name": "人数1-2越界",
+      "pass": true
+    },
+    {
+      "name": "至少人数解析",
+      "pass": true
+    },
+    {
+      "name": "最多人数解析",
+      "pass": true
+    },
+    {
+      "name": "教师人数不用于学生条件",
+      "pass": true
+    },
+    {
+      "name": "无规则信息不足",
+      "pass": true
+    },
+    {
+      "name": "元数据未确认不认定满足",
+      "pass": true
+    },
+    {
+      "name": "组别识别",
+      "pass": true
+    },
+    {
+      "name": "人数冲突优先",
+      "pass": true
+    },
+    {
+      "name": "日期和比例两项冲突",
+      "pass": true
+    },
+    {
+      "name": "不同阶段不冲突",
+      "pass": true
+    },
+    {
+      "name": "不同年份不冲突",
+      "pass": true
+    },
+    {
+      "name": "不同组别不冲突",
+      "pass": true
+    },
+    {
+      "name": "确认替代后冲突消失",
+      "pass": true
+    },
+    {
+      "name": "未确认替代不生效",
+      "pass": true
+    },
+    {
+      "name": "重复材料去重",
+      "pass": true
+    },
+    {
+      "name": "可选材料识别",
+      "pass": true
+    },
+    {
+      "name": "材料文本变化令ID变化",
+      "pass": true
+    },
+    {
+      "name": "日期年/月/日标准化",
+      "pass": true
+    },
+    {
+      "name": "无效日期拒绝",
+      "pass": true
+    },
+    {
+      "name": "检索命中视频",
+      "pass": true
+    },
+    {
+      "name": "无答案检索不编造",
+      "pass": true
+    },
+    {
+      "name": "阶段检索隔离",
+      "pass": true
+    },
+    {
+      "name": "跨工作区资料不混入",
+      "pass": true
+    },
+    {
+      "name": "引用字符位置真实",
+      "pass": true
+    },
+    {
+      "name": "PDF页码保留",
+      "pass": true
+    },
+    {
+      "name": "引用有效摘录通过",
+      "pass": true
+    },
+    {
+      "name": "伪造编号回退",
+      "pass": true
+    },
+    {
+      "name": "篡改事实回退",
+      "pass": true
+    },
+    {
+      "name": "非JSON回退",
+      "pass": true
+    },
+    {
+      "name": "空事实拒答",
+      "pass": true
+    },
+    {
+      "name": "合法快照通过",
+      "pass": true
+    },
+    {
+      "name": "伪造版本拒绝",
+      "pass": true
+    },
+    {
+      "name": "重复文档ID拒绝",
+      "pass": true
+    },
+    {
+      "name": "伪造PDF页文拒绝",
+      "pass": true
+    },
+    {
+      "name": "循环替代拒绝",
+      "pass": true
+    },
+    {
+      "name": "无效画像拒绝",
+      "pass": true
+    },
+    {
+      "name": "模型伪造摘录拒绝",
+      "pass": true
+    },
+    {
+      "name": "模型材料摘要规范化为原文",
+      "pass": true
+    },
+    {
+      "name": "模型人数规范化为数值范围",
+      "pass": true
+    },
+    {
+      "name": "局部AI结果不抹去其他规则种类",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-11-14T02:21:51.259Z",
+  "summary": "真实工具工作流：search_sources、check_eligibility、build_checklist；规则分析返回2条，拒绝1条。",
+  "elapsedMs": 4312,
+  "toolNames": [
+    "search_sources",
+    "check_eligibility",
+    "build_checklist"
+  ],
+  "chatAnswer": "原文事实（已校验摘录与引用）：\n\n1. 每支参赛队由2-5名学生组成。 [1]\n\n2. 演示视频：MP4格式，6-7分钟，分辨率不低于1080p。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+  "events": [
+    {
+      "type": "tool",
+      "messageId": "workflow-smoke",
+      "name": "search_sources",
+      "result": "1个匹配片段",
+      "elapsedMs": 0
+    },
+    {
+      "type": "tool",
+      "messageId": "workflow-smoke",
+      "name": "check_eligibility",
+      "result": "已核对人数与组别",
+      "elapsedMs": 4
+    },
+    {
+      "type": "tool",
+      "messageId": "workflow-smoke",
+      "name": "build_checklist",
+      "result": "1项材料条款",
+      "elapsedMs": 2
+    },
+    {
+      "type": "evidence",
+      "messageId": "workflow-smoke",
+      "evidence": [
+        {
+          "id": "test:v1:0",
+          "documentId": "test",
+          "name": "独立编写测试通知",
+          "stage": "省赛",
+          "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+          "index": 0,
+          "start": 0,
+          "end": 67,
+          "version": "v1",
+          "score": 1.4384103622589042
+        }
+      ]
+    },
+    {
+      "type": "validation",
+      "messageId": "workflow-smoke",
+      "valid": true,
+      "calls": 2,
+      "elapsedMs": 2730,
+      "promptTokens": 1849,
+      "completionTokens": 92
+    }
+  ],
+  "analysis": {
+    "rules": [
+      {
+        "documentId": "test",
+        "kind": "team",
+        "topic": "参赛队学生人数",
+        "value": "每支参赛队由2-5名学生组成。",
+        "quote": "每支参赛队由2-5名学生组成。",
+        "stage": "省赛",
+        "group": "全部",
+        "year": 2026,
+        "conditions": "",
+        "min": 2,
+        "max": 5,
+        "required": true,
+        "id": "test:c86c3695",
+        "confirmed": false,
+        "origin": "model",
+        "evidence": {
+          "id": "test:quote:0",
+          "documentId": "test",
+          "name": "独立编写测试通知",
+          "stage": "省赛",
+          "content": "每支参赛队由2-5名学生组成。",
+          "index": 0,
+          "start": 0,
+          "end": 15,
+          "version": "75480c86"
+        }
+      },
+      {
+        "documentId": "test",
+        "kind": "deadline",
+        "topic": "作品提交截止时间",
+        "value": "2026年11月18日",
+        "quote": "作品提交截止时间：2026年11月18日。",
+        "stage": "省赛",
+        "group": "全部",
+        "year": 2026,
+        "conditions": "",
+        "required": true,
+        "id": "test:514b1bb4",
+        "confirmed": false,
+        "origin": "model",
+        "evidence": {
+          "id": "test:quote:16",
+          "documentId": "test",
+          "name": "独立编写测试通知",
+          "stage": "省赛",
+          "content": "作品提交截止时间：2026年11月18日。",
+          "index": 0,
+          "start": 16,
+          "end": 37,
+          "version": "75480c86"
+        }
+      }
+    ],
+    "rejected": 1,
+    "mode": "model",
+    "usage": {
+      "promptTokens": 426,
+      "completionTokens": 217,
+      "totalTokens": 643
+    }
+  },
+  "passed": true
+}

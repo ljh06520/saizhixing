@@ -1,0 +1,36 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+const cache = new Map();
+function load(name) {
+  if (cache.has(name)) return cache.get(name);
+  const source = fs.readFileSync(path.resolve('lib', `${name}.ts`), 'utf8');
+  const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 } });
+  const record = { exports: {} };
+  new Function('exports', 'module', 'require', outputText)(record.exports, record, spec => load(spec.replace('./', '')));
+  cache.set(name, record.exports); return record.exports;
+}
+const { DEMO_DOCUMENTS: docs, findConflicts, retrieve, buildChecklist, checkEligibility } = load('competition');
+const conflicts = findConflicts(docs);
+assert.equal(conflicts.length, 2);
+assert.deepEqual(conflicts.map(c => c.topic).sort(), ['三等奖', '二等奖']);
+assert.equal(findConflicts(docs.map((d, i) => ({ ...d, stage: i === 2 ? '省赛' : d.stage }))).length, 0, '不能把不同阶段判定为冲突');
+assert.equal(findConflicts(docs.map(d => ({ ...d, stage: '通用' }))).length, 0);
+const sources = retrieve('演示视频分辨率要求', docs, '省赛');
+assert.ok(sources.length > 0);
+assert.ok(sources.some(e => e.content.includes('1080p')));
+assert.ok(sources.every(e => e.stage === '省赛'));
+assert.equal(retrieve('火星地质矿物', docs, '省赛').length, 0);
+for (const e of sources) assert.ok(docs.find(d => d.id === e.documentId).text.includes(e.content));
+const checklist = buildChecklist(docs, '省赛');
+assert.ok(checklist.some(i => i.title === '演示视频' && i.requirement.includes('1080p')));
+assert.equal(buildChecklist([], '省赛').length, 0);
+const profile = { education: '本科生', school: '普通本科', members: 2 };
+assert.match(checkEligibility(profile, docs, '省赛')[1].detail, /B组/);
+assert.equal(checkEligibility({ ...profile, members: 4 }, docs, '省赛')[0].status, '按资料不满足');
+assert.match(checkEligibility({ ...profile, school: '985 / 211' }, docs, '省赛')[1].detail, /只能报名A组/);
+assert.equal(checkEligibility(profile, [], '省赛')[0].status, '信息不足');
+const dateDocs = ['2026年11月18日', '2026年11月19日'].map((date, i) => ({ id: String(i), stage: '省赛', name: `v${i}`, text: `作品提交截止时间：${date}。`, createdAt: 0 }));
+assert.equal(findConflicts(dateDocs)[0].topic, '作品提交截止时间');
+console.log('PASS: 演示冲突、阶段隔离、关键词检索、原文溯源、材料提取、报名条件、截止日期冲突。');

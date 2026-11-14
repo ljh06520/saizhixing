@@ -25,3 +25,9 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+/public/pdf.worker.min.mjs
+/tmp/
+__pycache__/
+*.pyc
+/submission/source/
+/submission/*技术包*.zip

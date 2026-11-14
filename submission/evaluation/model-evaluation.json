@@ -1,0 +1,1283 @@
+{
+  "generatedAt": "2026-11-14T02:14:12.504Z",
+  "model": "deepseek-chat",
+  "modelCalls": 21,
+  "summary": "初轮旧检索和最终检索均11/12题命中固定期望事实；修复词法同义表达后，遗漏题复测通过。保留初轮记录，累计21次评测模型调用。无用户试用数据。",
+  "metrics": {
+    "baseline": {
+      "questions": 12,
+      "expectedFactCoverage": 11,
+      "verifiedGenerations": 10,
+      "fallbacks": 0,
+      "meanLatencyMs": 1093
+    },
+    "final": {
+      "questions": 12,
+      "expectedFactCoverage": 11,
+      "verifiedGenerations": 10,
+      "fallbacks": 0,
+      "meanLatencyMs": 1029
+    }
+  },
+  "records": [
+    {
+      "mode": "baseline",
+      "index": 1,
+      "fixture": "创新应用挑战（合成）",
+      "question": "团队人数范围是多少？",
+      "expected": [
+        "2-5"
+      ],
+      "pass": false,
+      "citationValid": null,
+      "returnedEvidence": 0,
+      "elapsedMs": 51,
+      "modelCalls": 0,
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "answer": "当前阶段资料中未检索到相关证据。请确认赛事与阶段，补充通知或调整关键词。系统不补写没有依据的要求。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-0",
+          "name": "search_sources",
+          "result": "0个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-0",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 2,
+      "fixture": "创新应用挑战（合成）",
+      "question": "演示视频格式是什么？",
+      "expected": [
+        "MP4"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1909,
+      "modelCalls": 1,
+      "promptTokens": 267,
+      "completionTokens": 34,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 演示视频：MP4格式，6-7分钟，分辨率不低于1080p。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-1",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-1",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+              "index": 0,
+              "start": 0,
+              "end": 67,
+              "version": "v1",
+              "score": 4
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-1",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1900,
+          "promptTokens": 267,
+          "completionTokens": 34
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 3,
+      "fixture": "创新应用挑战（合成）",
+      "question": "作品提交截止日期？",
+      "expected": [
+        "2026",
+        "11",
+        "18"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1519,
+      "modelCalls": 1,
+      "promptTokens": 267,
+      "completionTokens": 29,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 作品提交截止时间：2026年11月18日。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-2",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-2",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+              "index": 0,
+              "start": 0,
+              "end": 67,
+              "version": "v1",
+              "score": 6
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-2",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1512,
+          "promptTokens": 267,
+          "completionTokens": 29
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 4,
+      "fixture": "开源项目赛（合成）",
+      "question": "最多多少人参加一队？",
+      "expected": [
+        "4"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1336,
+      "modelCalls": 1,
+      "promptTokens": 254,
+      "completionTokens": 22,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 每队最多4人。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-3",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-3",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 1
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-3",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1330,
+          "promptTokens": 254,
+          "completionTokens": 22
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 5,
+      "fixture": "开源项目赛（合成）",
+      "question": "技术文档最多几页？",
+      "expected": [
+        "25"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1098,
+      "modelCalls": 1,
+      "promptTokens": 254,
+      "completionTokens": 26,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 技术文档：PDF格式，不超过25页。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-4",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-4",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 4
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-4",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1089,
+          "promptTokens": 254,
+          "completionTokens": 26
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 6,
+      "fixture": "开源项目赛（合成）",
+      "question": "仓库包含什么说明？",
+      "expected": [
+        "安装",
+        "开源"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1210,
+      "modelCalls": 1,
+      "promptTokens": 253,
+      "completionTokens": 28,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 代码仓库：须包含安装指南与开源许可说明。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-5",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-5",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-5",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1205,
+          "promptTokens": 253,
+          "completionTokens": 28
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 7,
+      "fixture": "设计工作坊（合成）",
+      "question": "团队至少多少人？",
+      "expected": [
+        "2"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1178,
+      "modelCalls": 1,
+      "promptTokens": 254,
+      "completionTokens": 24,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 每支参赛队至少2人。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-6",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-6",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-6",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1168,
+          "promptTokens": 254,
+          "completionTokens": 24
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 8,
+      "fixture": "设计工作坊（合成）",
+      "question": "在线演示是否必交？",
+      "expected": [
+        "可选"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1209,
+      "modelCalls": 1,
+      "promptTokens": 256,
+      "completionTokens": 29,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 在线演示：可选加分项，评审期间提供访问地址。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-7",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 1
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-7",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-7",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1202,
+          "promptTokens": 256,
+          "completionTokens": 29
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 9,
+      "fixture": "设计工作坊（合成）",
+      "question": "普通本科可报名什么组？",
+      "expected": [
+        "B组"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1159,
+      "modelCalls": 1,
+      "promptTokens": 257,
+      "completionTokens": 25,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 普通本科学生：可报名B组。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-8",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 1
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-8",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 6
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-8",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1149,
+          "promptTokens": 257,
+          "completionTokens": 25
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 10,
+      "fixture": "规则版本赛（合成）",
+      "question": "二等奖比例有什么冲突？",
+      "expected": [
+        "20%",
+        "25%"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 2,
+      "elapsedMs": 1141,
+      "modelCalls": 1,
+      "promptTokens": 306,
+      "completionTokens": 37,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 二等奖：20%。 [1]\n\n2. 二等奖：25%。 [2]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-9",
+          "name": "search_sources",
+          "result": "2个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-9",
+          "evidence": [
+            {
+              "id": "old:v1:0",
+              "documentId": "old",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "二等奖：20%。\n作品提交截止时间：2026-11-18。",
+              "index": 0,
+              "start": 0,
+              "end": 29,
+              "version": "v1",
+              "score": 3
+            },
+            {
+              "id": "new:v1:0",
+              "documentId": "new",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "二等奖：25%。\n作品提交截止时间：2026-11-19。",
+              "index": 0,
+              "start": 0,
+              "end": 29,
+              "version": "v1",
+              "score": 3
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-9",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1136,
+          "promptTokens": 306,
+          "completionTokens": 37
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 11,
+      "fixture": "隔离测试赛（合成）",
+      "question": "省赛一等奖比例是多少？",
+      "expected": [
+        "10%"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1296,
+      "modelCalls": 1,
+      "promptTokens": 226,
+      "completionTokens": 21,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 一等奖：10%。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-10",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-10",
+          "evidence": [
+            {
+              "id": "a:v1:0",
+              "documentId": "a",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "一等奖：10%。",
+              "index": 0,
+              "start": 0,
+              "end": 8,
+              "version": "v1",
+              "score": 2
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-10",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1293,
+          "promptTokens": 226,
+          "completionTokens": 21
+        }
+      ]
+    },
+    {
+      "mode": "baseline",
+      "index": 12,
+      "fixture": "创新应用挑战（合成）",
+      "question": "火星矿物有哪些？",
+      "expected": [],
+      "pass": true,
+      "citationValid": null,
+      "returnedEvidence": 0,
+      "elapsedMs": 5,
+      "modelCalls": 0,
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "answer": "当前阶段资料中未检索到相关证据。请确认赛事与阶段，补充通知或调整关键词。系统不补写没有依据的要求。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-11",
+          "name": "search_sources",
+          "result": "0个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-11",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 1,
+      "fixture": "创新应用挑战（合成）",
+      "question": "团队人数范围是多少？",
+      "expected": [
+        "2-5"
+      ],
+      "pass": false,
+      "citationValid": null,
+      "returnedEvidence": 0,
+      "elapsedMs": 8,
+      "modelCalls": 0,
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "answer": "当前阶段资料中未检索到相关证据。请确认赛事与阶段，补充通知或调整关键词。系统不补写没有依据的要求。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-0",
+          "name": "search_sources",
+          "result": "0个匹配片段",
+          "elapsedMs": 2
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-0",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 2,
+      "fixture": "创新应用挑战（合成）",
+      "question": "演示视频格式是什么？",
+      "expected": [
+        "MP4"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1456,
+      "modelCalls": 1,
+      "promptTokens": 274,
+      "completionTokens": 34,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 演示视频：MP4格式，6-7分钟，分辨率不低于1080p。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-1",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 1
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-1",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+              "index": 0,
+              "start": 0,
+              "end": 67,
+              "version": "v1",
+              "score": 1.1507282898071234
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-1",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1452,
+          "promptTokens": 274,
+          "completionTokens": 34
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 3,
+      "fixture": "创新应用挑战（合成）",
+      "question": "作品提交截止日期？",
+      "expected": [
+        "2026",
+        "11",
+        "18"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1253,
+      "modelCalls": 1,
+      "promptTokens": 274,
+      "completionTokens": 29,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 作品提交截止时间：2026年11月18日。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-2",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-2",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+              "index": 0,
+              "start": 0,
+              "end": 67,
+              "version": "v1",
+              "score": 1.4384103622589042
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-2",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1246,
+          "promptTokens": 274,
+          "completionTokens": 29
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 4,
+      "fixture": "开源项目赛（合成）",
+      "question": "最多多少人参加一队？",
+      "expected": [
+        "4"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1095,
+      "modelCalls": 1,
+      "promptTokens": 261,
+      "completionTokens": 22,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 每队最多4人。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-3",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-3",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 0.28768207245178085
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-3",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1088,
+          "promptTokens": 261,
+          "completionTokens": 22
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 5,
+      "fixture": "开源项目赛（合成）",
+      "question": "技术文档最多几页？",
+      "expected": [
+        "25"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1404,
+      "modelCalls": 1,
+      "promptTokens": 261,
+      "completionTokens": 26,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 技术文档：PDF格式，不超过25页。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-4",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-4",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 1.1507282898071234
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-4",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1398,
+          "promptTokens": 261,
+          "completionTokens": 26
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 6,
+      "fixture": "开源项目赛（合成）",
+      "question": "仓库包含什么说明？",
+      "expected": [
+        "安装",
+        "开源"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1047,
+      "modelCalls": 1,
+      "promptTokens": 260,
+      "completionTokens": 28,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 代码仓库：须包含安装指南与开源许可说明。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-5",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-5",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每队最多4人。\n代码仓库：须包含安装指南与开源许可说明。\n技术文档：PDF格式，不超过25页。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 0.8630462173553426
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-5",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1045,
+          "promptTokens": 260,
+          "completionTokens": 28
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 7,
+      "fixture": "设计工作坊（合成）",
+      "question": "团队至少多少人？",
+      "expected": [
+        "2"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1314,
+      "modelCalls": 1,
+      "promptTokens": 261,
+      "completionTokens": 24,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 每支参赛队至少2人。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-6",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-6",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 0.5753641449035617
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-6",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1310,
+          "promptTokens": 261,
+          "completionTokens": 24
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 8,
+      "fixture": "设计工作坊（合成）",
+      "question": "在线演示是否必交？",
+      "expected": [
+        "可选"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1400,
+      "modelCalls": 1,
+      "promptTokens": 263,
+      "completionTokens": 29,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 在线演示：可选加分项，评审期间提供访问地址。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-7",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-7",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 0.8630462173553426
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-7",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1394,
+          "promptTokens": 263,
+          "completionTokens": 29
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 9,
+      "fixture": "设计工作坊（合成）",
+      "question": "普通本科可报名什么组？",
+      "expected": [
+        "B组"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1095,
+      "modelCalls": 1,
+      "promptTokens": 264,
+      "completionTokens": 25,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 普通本科学生：可报名B组。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-8",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-8",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队至少2人。\n在线演示：可选加分项，评审期间提供访问地址。\n普通本科学生：可报名B组。",
+              "index": 0,
+              "start": 0,
+              "end": 47,
+              "version": "v1",
+              "score": 1.4384103622589042
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-8",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1090,
+          "promptTokens": 264,
+          "completionTokens": 25
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 10,
+      "fixture": "规则版本赛（合成）",
+      "question": "二等奖比例有什么冲突？",
+      "expected": [
+        "20%",
+        "25%"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 2,
+      "elapsedMs": 1191,
+      "modelCalls": 1,
+      "promptTokens": 320,
+      "completionTokens": 37,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 二等奖：20%。 [1]\n\n2. 二等奖：25%。 [2]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-9",
+          "name": "search_sources",
+          "result": "2个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-9",
+          "evidence": [
+            {
+              "id": "old:v1:0",
+              "documentId": "old",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "二等奖：20%。\n作品提交截止时间：2026-11-18。",
+              "index": 0,
+              "start": 0,
+              "end": 29,
+              "version": "v1",
+              "score": 0.3646431135879092
+            },
+            {
+              "id": "new:v1:0",
+              "documentId": "new",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "二等奖：25%。\n作品提交截止时间：2026-11-19。",
+              "index": 0,
+              "start": 0,
+              "end": 29,
+              "version": "v1",
+              "score": 0.3646431135879092
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-9",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1188,
+          "promptTokens": 320,
+          "completionTokens": 37
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 11,
+      "fixture": "隔离测试赛（合成）",
+      "question": "省赛一等奖比例是多少？",
+      "expected": [
+        "10%"
+      ],
+      "pass": true,
+      "citationValid": true,
+      "returnedEvidence": 1,
+      "elapsedMs": 1078,
+      "modelCalls": 1,
+      "promptTokens": 233,
+      "completionTokens": 21,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 一等奖：10%。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-10",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-10",
+          "evidence": [
+            {
+              "id": "a:v1:0",
+              "documentId": "a",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "一等奖：10%。",
+              "index": 0,
+              "start": 0,
+              "end": 8,
+              "version": "v1",
+              "score": 1.9425780856457067
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "eval-10",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1071,
+          "promptTokens": 233,
+          "completionTokens": 21
+        }
+      ]
+    },
+    {
+      "mode": "final",
+      "index": 12,
+      "fixture": "创新应用挑战（合成）",
+      "question": "火星矿物有哪些？",
+      "expected": [],
+      "pass": true,
+      "citationValid": null,
+      "returnedEvidence": 0,
+      "elapsedMs": 3,
+      "modelCalls": 0,
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "answer": "当前阶段资料中未检索到相关证据。请确认赛事与阶段，补充通知或调整关键词。系统不补写没有依据的要求。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "eval-11",
+          "name": "search_sources",
+          "result": "0个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "eval-11",
+          "evidence": []
+        }
+      ]
+    }
+  ],
+  "retests": [
+    {
+      "question": "团队人数范围是多少？",
+      "reason": "修复团队人数/参赛队同义表达召回遗漏",
+      "pass": true,
+      "citationValid": true,
+      "modelCalls": 1,
+      "elapsedMs": 1415,
+      "answer": "原文事实（已校验摘录与引用）：\n\n1. 每支参赛队由2-5名学生组成。 [1]\n\n辅助建议：以上是原文事实摘录，请结合适用阶段、组别及例外条件核对。来源存在冲突时，请向组委会确认；演示摘录未经官网核验。",
+      "events": [
+        {
+          "type": "tool",
+          "messageId": "retest-team",
+          "name": "search_sources",
+          "result": "1个匹配片段",
+          "elapsedMs": 0
+        },
+        {
+          "type": "evidence",
+          "messageId": "retest-team",
+          "evidence": [
+            {
+              "id": "test:v1:0",
+              "documentId": "test",
+              "name": "独立编写测试通知",
+              "stage": "省赛",
+              "content": "每支参赛队由2-5名学生组成。\n作品提交截止时间：2026年11月18日。\n演示视频：MP4格式，6-7分钟，分辨率不低于1080p。",
+              "index": 0,
+              "start": 0,
+              "end": 67,
+              "version": "v1",
+              "score": 0.8630462173553426
+            }
+          ]
+        },
+        {
+          "type": "validation",
+          "messageId": "retest-team",
+          "valid": true,
+          "calls": 1,
+          "elapsedMs": 1348,
+          "promptTokens": 274,
+          "completionTokens": 27
+        }
+      ]
+    }
+  ]
+}

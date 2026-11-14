@@ -1,0 +1,19 @@
+{
+  "updated_on": "2026-11-14",
+  "status": "audio_and_subtitles_ready_capture_interrupted",
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "audio_segments": 12,
+  "subtitle_segments": 12,
+  "planned_duration_seconds": 444.25,
+  "target_width": 1920,
+  "target_height": 1080,
+  "final_mp4_exists": false,
+  "actual_frame_capture_complete": false,
+  "reason": "浏览器安全策略阻止截图下载桥，后续Computer Use结束当前轮操作；未绕过限制或生成模拟界面。",
+  "remaining": [
+    "恢复GUI后采集并合法保存最终应用真实画面",
+    "对照最终实现复核分镜讲解",
+    "编码MP4并检查时长、分辨率、音轨、字幕和全解码",
+    "人工观看成片关键片段"
+  ]
+}

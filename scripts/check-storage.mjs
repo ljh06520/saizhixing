@@ -1,0 +1,11 @@
+import 'fake-indexeddb/auto';
+import assert from 'node:assert/strict';
+import { makeLoader } from './ts-loader.mjs';
+const old={documents:[{id:'old-doc',name:'旧资料',text:'每队1-3名学生。',stage:'省赛',createdAt:0}],profile:{education:'本科生',school:'普通本科',members:2},stage:'省赛',checked:['old-check']};
+const db=await new Promise((resolve,reject)=>{const req=indexedDB.open('saizhixing-workspace',1);req.onupgradeneeded=()=>req.result.createObjectStore('workspace');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});
+await new Promise((resolve,reject)=>{const tx=db.transaction('workspace','readwrite');tx.objectStore('workspace').put(old,'current');tx.oncomplete=resolve;tx.onerror=reject;});db.close();
+const {loadLibrary,saveLibrary,emptyWorkspace}=makeLoader()('lib/workspace-store.ts');
+const library=await loadLibrary();assert.equal(library.version,2);assert.equal(library.workspaces[0].documents[0].id,'old-doc');assert.deepEqual(library.workspaces[0].checked,['old-check']);
+const next=emptyWorkspace('第二场赛事',2027);library.workspaces.push(next);library.activeId=next.id;await saveLibrary(library);const restored=await loadLibrary();assert.equal(restored.workspaces.length,2);assert.equal(restored.activeId,next.id);assert.equal(restored.workspaces[1].documents.length,0);assert.equal(restored.workspaces[0].documents.length,1);
+const backup=await new Promise((resolve,reject)=>{const req=indexedDB.open('saizhixing-workspace',2);req.onsuccess=()=>{const db=req.result;const tx=db.transaction('workspace','readonly');const read=tx.objectStore('workspace').get('current');tx.oncomplete=()=>{db.close();resolve(read.result);};tx.onerror=reject;};req.onerror=reject;});assert.deepEqual(backup,old);
+console.log('PASS: v1→v2资料迁移、勾选保留、旧键备份不删除、两个工作区隔离、活动工作区恢复。');

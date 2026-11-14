@@ -1,0 +1,6 @@
+# Optional artifact generation dependencies; not required to run the Web app.
+reportlab>=4.4,<5
+pypdf>=6,<7
+Pillow>=11,<13
+edge-tts>=7,<8
+imageio-ffmpeg>=0.6,<0.7
