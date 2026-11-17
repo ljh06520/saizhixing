@@ -1,13 +1,194 @@
 {
-  "pages": 20,
-  "path": "D:\\web competition\\submission\\technical-report.pdf",
-  "source": "D:\\web competition\\submission\\docs\\technical-report.md",
-  "resolved_source": "D:\\web competition\\submission\\docs\\technical-report-resolved.md",
-  "verification_attached": true,
-  "evaluation_attached": true,
+  "date": "2026-11-17",
+  "pages": 24,
+  "page_limit": 30,
+  "path": "submission/technical-report.pdf",
+  "source": "submission/docs/technical-report.md",
+  "resolved_source": "submission/docs/technical-report-resolved.md",
+  "sha256": "34db27aadb058030103cd0446e1d3569640540e2f761066048e6d74ba4dc4377",
+  "layout_bounds": [
+    {
+      "page": 1,
+      "lowestBodyY": 171,
+      "bottomLimit": 125
+    },
+    {
+      "page": 2,
+      "lowestBodyY": 158.99,
+      "bottomLimit": 65
+    },
+    {
+      "page": 3,
+      "lowestBodyY": 267.49,
+      "bottomLimit": 65
+    },
+    {
+      "page": 4,
+      "lowestBodyY": 233.69,
+      "bottomLimit": 65
+    },
+    {
+      "page": 5,
+      "lowestBodyY": 300.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 6,
+      "lowestBodyY": 241.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 7,
+      "lowestBodyY": 156.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 8,
+      "lowestBodyY": 294.89,
+      "bottomLimit": 65
+    },
+    {
+      "page": 9,
+      "lowestBodyY": 333.89,
+      "bottomLimit": 65
+    },
+    {
+      "page": 10,
+      "lowestBodyY": 232.49,
+      "bottomLimit": 65
+    },
+    {
+      "page": 11,
+      "lowestBodyY": 252.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 12,
+      "lowestBodyY": 212.79,
+      "bottomLimit": 65
+    },
+    {
+      "page": 13,
+      "lowestBodyY": 232.49,
+      "bottomLimit": 65
+    },
+    {
+      "page": 14,
+      "lowestBodyY": 283.29,
+      "bottomLimit": 65
+    },
+    {
+      "page": 15,
+      "lowestBodyY": 294.89,
+      "bottomLimit": 65
+    },
+    {
+      "page": 16,
+      "lowestBodyY": 149.79,
+      "bottomLimit": 65
+    },
+    {
+      "page": 17,
+      "lowestBodyY": 202.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 18,
+      "lowestBodyY": 202.69,
+      "bottomLimit": 65
+    },
+    {
+      "page": 19,
+      "lowestBodyY": 161.59,
+      "bottomLimit": 65
+    },
+    {
+      "page": 20,
+      "lowestBodyY": 189.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 21,
+      "lowestBodyY": 239.89,
+      "bottomLimit": 65
+    },
+    {
+      "page": 22,
+      "lowestBodyY": 287.19,
+      "bottomLimit": 65
+    },
+    {
+      "page": 23,
+      "lowestBodyY": 208.49,
+      "bottomLimit": 65
+    },
+    {
+      "page": 24,
+      "lowestBodyY": 98.59,
+      "bottomLimit": 65
+    }
+  ],
   "team_metadata_complete": true,
-  "review_repository_ready": false,
-  "browser_regression_complete": false,
+  "review_repository_ready": true,
+  "targeted_fix_retest_passed": true,
+  "full_browser_matrix_complete": false,
   "demo_mp4_complete": false,
-  "final_submission_ready": false
+  "final_submission_ready": false,
+  "visual_review": {
+    "passed": true,
+    "reviewer": "agent visual inspection",
+    "pages_inspected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "render_tool": "pdftoppm,96dpi",
+    "findings": "Reviewed all 24 pages; improved cover link contrast and figure labels, then re-rendered and inspected changed pages. No visible clipping, overlaps or missing Chinese glyphs."
+  },
+  "structural_checks": {
+    "page_count_24_within_30": true,
+    "a4_all_pages": true,
+    "every_page_has_text": true,
+    "page_numbers": true,
+    "bookmarks_24": true,
+    "no_unresolved_template": true,
+    "obsolete_claims_removed": true,
+    "team_and_repo_present": true,
+    "test_claims_match": true,
+    "default_local_mode_documented": true,
+    "no_key_pattern": true,
+    "body_bounds": true,
+    "not_encrypted": true,
+    "chinese_fonts_embedded": true
+  },
+  "chinese_font_subsets": {
+    "/AAAAAA+MicrosoftYaHei-0": true,
+    "/AAAAAB+MicrosoftYaHei-0": true,
+    "/AAAAAC+MicrosoftYaHei-0": true,
+    "/AAAAAD+MicrosoftYaHei-0": true,
+    "/AAAAAA+MicrosoftYaHei-Bold-0": true,
+    "/AAAAAB+MicrosoftYaHei-Bold-0": true
+  },
+  "qa_passed": true
 }

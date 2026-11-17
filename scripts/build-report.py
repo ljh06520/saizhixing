@@ -27,6 +27,8 @@ PALE = HexColor('#eff3fc')
 LINE = HexColor('#dce4f1')
 WIDTH, HEIGHT = 595.276, 841.89
 LEFT, RIGHT, TOP, BOTTOM = 53, 53, 129, 65
+TOTAL_PAGES = 24
+LAYOUT_BOUNDS = []
 
 def font_setup():
     candidates = [Path('C:/Windows/Fonts/msyh.ttc'), Path('C:/Windows/Fonts/simhei.ttf')]
@@ -40,6 +42,7 @@ def font_setup():
 def markup(text):
     text = html.escape(text).replace('—', '-').replace('–', '-').replace('‑', '-')
     text = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', text)
+    text = re.sub(r'(https?://[A-Za-z0-9:/._?=&amp;%-]+)', r'<link href="\1" color="#4068dc">\1</link>', text)
     return text
 
 def style(name='body', **kwargs):
@@ -50,6 +53,7 @@ def style(name='body', **kwargs):
 
 def blocks(markdown):
     result, paragraph, table = [], [], []
+    code = None
     def flush():
         nonlocal paragraph, table
         if paragraph:
@@ -58,6 +62,14 @@ def blocks(markdown):
             result.append(('table', table)); table = []
     for line in markdown.splitlines():
         line = line.strip()
+        if line.startswith('```'):
+            if code is None:
+                flush(); code = []
+            else:
+                result.append(('code', code)); code = None
+            continue
+        if code is not None:
+            code.append(line); continue
         if not line:
             flush(); continue
         if line.startswith('|'):
@@ -116,7 +128,7 @@ def draw_header(c, page, title):
     c.setStrokeColor(LINE); c.line(LEFT, 46, WIDTH-RIGHT, 46)
     c.setFont('YaHei', 7.2); c.setFillColor(MUTED)
     c.drawString(LEFT, 29, '赛知行 · 本地交付版 · 来源与资格仍需人工核实')
-    c.drawRightString(WIDTH-RIGHT, 29, f'{page:02d} / 20')
+    c.drawRightString(WIDTH-RIGHT, 29, f'{page:02d} / {TOTAL_PAGES}')
 
 def draw_body(c, page, content):
     parsed = blocks(content)
@@ -129,6 +141,9 @@ def draw_body(c, page, content):
             y -= 9
             p = Paragraph(markup(value), ParagraphStyle('section', parent=style(), fontName='YaHeiBold', fontSize=12.2, leading=20, textColor=BLUE))
             w,h = p.wrap(content_width, HEIGHT); p.drawOn(c, LEFT, y-h); y -= h+10
+        elif kind == 'code':
+            p = Paragraph('<br/>'.join(markup(line) for line in value), style('code', fontSize=8.4, leading=17, backColor=PALE, borderPadding=9))
+            _,h = p.wrap(content_width-20, HEIGHT); p.drawOn(c, LEFT+10, y-h); y -= h+26
         elif kind == 'table':
             count = len(value[0]); cells = [[Paragraph(markup(cell), style('cell', fontSize=8.4, leading=15.5)) for cell in row] for row in value]
             table = Table(cells, colWidths=[content_width/count]*count, hAlign='LEFT')
@@ -139,11 +154,12 @@ def draw_body(c, page, content):
             w,h = p.wrap(content_width, HEIGHT); p.drawOn(c, LEFT, y-h); y -= h+(8 if kind == 'bullet' else 13)
         if y < BOTTOM:
             raise RuntimeError(f'Page {page} overflows after {kind}: y={y:.1f}. Edit the Markdown page rather than silently clipping.')
+    LAYOUT_BOUNDS.append({'page':page, 'lowestBodyY':round(y,2), 'bottomLimit':BOTTOM})
     flows = {
-        4: (['确认资料范围', '提取与核对', '清单与预检', '用户最终确认'], '图1  准备流程中的人机协作边界'),
-        5: (['浏览器工作区', '受控API接口', '模型与工具', '证据映射输出'], '图2  本地优先的系统责任划分'),
-        8: (['范围过滤', '词法排序', '候选片段', '证据核对'], '图3  词法检索的使用流程'),
-        12: (['引用编号', '文档与版本', '原文定位', '支持关系'], '图4  引用验证的层次'),
+        5: (['确认资料范围', '提取与核对', '清单与预检', '用户最终确认'], '图1  准备流程中的人机协作边界'),
+        6: (['浏览器工作区', '受控API接口', '本地/模型处理', '证据映射输出'], '图2  本地优先的系统责任划分'),
+        9: (['范围过滤', '词法排序', '候选片段', '证据核对'], '图3  词法检索的使用流程'),
+        13: (['引用编号', '文档与版本', '原文定位', '逐字摘录校验'], '图4  引用验证的层次'),
     }
     if page in flows and y > 195:
         draw_flow(c, *flows[page])
@@ -179,11 +195,13 @@ def cover(c, content):
     y=375
     cover_text = [v for k,v in blocks(content) if k=='paragraph']
     for value in cover_text:
-        if value.startswith('技术文档'): continue
-        p=Paragraph(markup(value),ParagraphStyle('cover',parent=style(),fontSize=9,leading=18,textColor=HexColor('#c5d1e7')))
+        if value.startswith(('技术文档', '正式技术文档')): continue
+        p=Paragraph(markup(value).replace('color="#4068dc"','color="#a9c1ff"'),ParagraphStyle('cover',parent=style(),fontSize=9,leading=18,textColor=HexColor('#c5d1e7')))
         _,h=p.wrap(WIDTH-LEFT-RIGHT-34,HEIGHT);p.drawOn(c,LEFT+17,y-h);y-=h+13
+    if y < 125: raise RuntimeError(f'Cover text overflows card: {y}')
+    LAYOUT_BOUNDS.append({'page':1,'lowestBodyY':round(y,2),'bottomLimit':125})
     c.setFont('YaHei',8);c.setFillColor(HexColor('#8d9fbe'));c.drawString(LEFT,64,'规则有据，行动有序。')
-    c.drawRightString(WIDTH-RIGHT,64,'01 / 20')
+    c.drawRightString(WIDTH-RIGHT,64,f'01 / {TOTAL_PAGES}')
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--verification');parser.add_argument('--evaluation');parser.add_argument('--output',default=str(ROOT/'submission/technical-report.pdf'));args=parser.parse_args()
@@ -203,14 +221,21 @@ def main():
         indices.append('- 浏览器状态：submission/evaluation/browser-qa.json；提交缺项见SUBMISSION_CHECKLIST.md。')
     text=text.replace('{{EVIDENCE_INDEX}}','\n'.join(indices) or '- 最终验收证据尚未归档；当前文档为待冻结版本。')
     (ROOT/'submission/docs/technical-report-resolved.md').write_text(text,encoding='utf-8')
-    pages=text.split('<!-- PAGE -->');assert len(pages)==20,f'Expected 20 pages, got {len(pages)}'
+    global TOTAL_PAGES
+    pages=text.split('<!-- PAGE -->'); TOTAL_PAGES=len(pages); assert TOTAL_PAGES<=30, f'Page limit exceeded: {TOTAL_PAGES}'
     font_setup(); output=Path(args.output);output.parent.mkdir(parents=True,exist_ok=True)
     c=canvas.Canvas(str(output),pagesize=(WIDTH,HEIGHT));c.setTitle('赛知行 - 技术文档');c.setAuthor('广州商学院 / WEB玩家');c.setSubject('校园竞赛规则解读与材料预检助手')
     for i,page in enumerate(pages,1):
+        c.bookmarkPage(f'page-{i}')
+        title=next(v for k,v in blocks(page) if k=='title')
+        c.addOutlineEntry(title,f'page-{i}',level=0)
         cover(c,page) if i==1 else draw_body(c,i,page)
         c.showPage()
-    c.save();reader=PdfReader(str(output));assert len(reader.pages)==20
-    status={'pages':len(reader.pages),'path':str(output),'source':str(source),'resolved_source':str(ROOT/'submission/docs/technical-report-resolved.md'),'verification_attached':bool(verification),'evaluation_attached':bool(evaluation),'team_metadata_complete':True,'review_repository_ready':False,'browser_regression_complete':False,'demo_mp4_complete':False,'final_submission_ready':False}
+    c.save();reader=PdfReader(str(output));assert len(reader.pages)==TOTAL_PAGES
+    import hashlib
+    publication=load_record(ROOT/'submission/evaluation/github-publication-2026-11-17.json') or {}
+    retest=load_record(ROOT/'submission/evaluation/fix-retest-2026-11-17.json') or {}
+    status={'date':'2026-11-17','pages':len(reader.pages),'page_limit':30,'path':'submission/technical-report.pdf','source':'submission/docs/technical-report.md','resolved_source':'submission/docs/technical-report-resolved.md','sha256':hashlib.sha256(output.read_bytes()).hexdigest(),'layout_bounds':LAYOUT_BOUNDS,'team_metadata_complete':True,'review_repository_ready':publication.get('public') is True,'targeted_fix_retest_passed':retest.get('passed') is True,'full_browser_matrix_complete':False,'demo_mp4_complete':False,'final_submission_ready':False,'visual_review':'pending; rendering and page inspection required'}
     (ROOT/'submission/docs/pdf-build-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(status,ensure_ascii=False))
 
