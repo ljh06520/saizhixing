@@ -79,7 +79,8 @@ export function ruleConflicts(documents: SourceDocument[], overrides?: Rule[]): 
 export function materialChecklist(documents: SourceDocument[], stage: Stage, overrides?: Rule[]): (ChecklistItem & { required?: boolean })[] {
   const rules = activeRules(documents, overrides).filter(r => r.kind === 'material' && (r.stage === stage || r.stage === '通用'));
   const seen = new Set<string>();
-  return rules.flatMap(r => { const key = `${r.topic}:${r.value.replace(/\s/g, '')}`; if (seen.has(key)) return []; seen.add(key); return [{ id: `${r.documentId}:${r.id}:${fingerprint(r.value)}`, title: r.topic + (r.required === false ? '（可选）' : ''), requirement: r.value, evidence: r.evidence, required: r.required }]; });
+  // 不同 topic 可能指向同一句要求，按规范化后的要求文本去重，避免同一件事出现两次
+  return rules.flatMap(r => { const key = r.value.replace(/\s/g, ''); if (seen.has(key)) return []; seen.add(key); return [{ id: `${r.documentId}:${r.id}:${fingerprint(r.value)}`, title: r.topic + (r.required === false ? '（可选）' : ''), requirement: r.value, evidence: r.evidence, required: r.required }]; });
 }
 export function eligibilityResult(profile: Profile, documents: SourceDocument[], stage: Stage, overrides?: Rule[]) {
   const rules = activeRules(documents, overrides).filter(r => r.stage === stage || r.stage === '通用');

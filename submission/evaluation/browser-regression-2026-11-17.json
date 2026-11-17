@@ -1,0 +1,501 @@
+{
+  "date": "2026-11-17",
+  "project": "D:\\web competition\\project",
+  "method": "真实浏览器UI交互；未将源代码检查替代浏览器结果",
+  "environment": {
+    "browser": "IAB Chromium，当前桌面浏览器",
+    "desktop": "默认桌面视口",
+    "mobile": "390×844模拟视口，非物理手机",
+    "normalUrl": "http://127.0.0.1:3002/",
+    "normalMode": "Next.js 15.5.29 production",
+    "faultModes": "独立3003无密钥及3004不可连接端点；已关闭，未改.env.local"
+  },
+  "summary": {
+    "total": 59,
+    "passed": 57,
+    "failed": 2,
+    "blocked": 0,
+    "productionBuild": "通过",
+    "allPassed": false,
+    "conclusion": "主要业务流程可用；存在2项已复现体验问题，不能标为全项通过"
+  },
+  "cases": [
+    {
+      "id": "BR-001",
+      "area": "workspace",
+      "name": "空赛事名称",
+      "status": "passed",
+      "observed": "阻止提交并提示请输入赛事名称"
+    },
+    {
+      "id": "BR-002",
+      "area": "workspace",
+      "name": "非法年份1999",
+      "status": "passed",
+      "observed": "提示2000—2100之间"
+    },
+    {
+      "id": "BR-003",
+      "area": "workspace",
+      "name": "创建赛事A",
+      "status": "passed",
+      "observed": "创建成功，记录年份和阶段"
+    },
+    {
+      "id": "BR-004",
+      "area": "workspace",
+      "name": "编辑赛事A名称",
+      "status": "passed",
+      "observed": "新名称正确显示"
+    },
+    {
+      "id": "BR-005",
+      "area": "workspace",
+      "name": "创建独立赛事B",
+      "status": "passed",
+      "observed": "资料、冲突与勾选均为空"
+    },
+    {
+      "id": "BR-006",
+      "area": "workspace",
+      "name": "切回赛事A",
+      "status": "passed",
+      "observed": "恢复原有资料和进度"
+    },
+    {
+      "id": "BR-007",
+      "area": "workspace",
+      "name": "取消删除B",
+      "status": "passed",
+      "observed": "B保留"
+    },
+    {
+      "id": "BR-008",
+      "area": "workspace",
+      "name": "确认删除B",
+      "status": "passed",
+      "observed": "仅合成测试B移除"
+    },
+    {
+      "id": "BR-009",
+      "area": "workspace",
+      "name": "刷新恢复",
+      "status": "passed",
+      "observed": "活动赛事、3份资料、画像和25%勾选进度恢复"
+    },
+    {
+      "id": "BR-010",
+      "area": "documents",
+      "name": "TXT导入",
+      "status": "passed",
+      "observed": "合成规则文本成功导入"
+    },
+    {
+      "id": "BR-011",
+      "area": "documents",
+      "name": "Markdown导入",
+      "status": "passed",
+      "observed": "补充通知成功导入"
+    },
+    {
+      "id": "BR-012",
+      "area": "documents",
+      "name": "两页文本PDF导入",
+      "status": "passed",
+      "observed": "成功提取两页，保留页码；首次加载等待较长"
+    },
+    {
+      "id": "BR-013",
+      "area": "documents",
+      "name": "元数据确认",
+      "status": "passed",
+      "observed": "来源、阶段和确认状态保存"
+    },
+    {
+      "id": "BR-014",
+      "area": "documents",
+      "name": "空文件",
+      "status": "passed",
+      "observed": "拒绝，提示文件为空或超过2MB"
+    },
+    {
+      "id": "BR-015",
+      "area": "documents",
+      "name": "超限文本",
+      "status": "passed",
+      "observed": "2MB+1字节文件被拒绝"
+    },
+    {
+      "id": "BR-016",
+      "area": "documents",
+      "name": "不支持CSV",
+      "status": "passed",
+      "observed": "拒绝并列出支持格式"
+    },
+    {
+      "id": "BR-017",
+      "area": "documents",
+      "name": "扫描或无文字PDF",
+      "status": "passed",
+      "observed": "拒绝并说明当前不支持OCR"
+    },
+    {
+      "id": "BR-018",
+      "area": "documents",
+      "name": "加密PDF",
+      "status": "passed",
+      "observed": "拒绝并显示无法读取说明"
+    },
+    {
+      "id": "BR-019",
+      "area": "documents",
+      "name": "PDF第2页原文定位",
+      "status": "passed",
+      "observed": "证据弹窗显示第2页、内容版本及字符位置66—84"
+    },
+    {
+      "id": "BR-020",
+      "area": "documents",
+      "name": "取消删除PDF",
+      "status": "passed",
+      "observed": "资料保留"
+    },
+    {
+      "id": "BR-021",
+      "area": "documents",
+      "name": "确认删除PDF",
+      "status": "passed",
+      "observed": "仅测试PDF移除，相关对话清理"
+    },
+    {
+      "id": "BR-022",
+      "area": "rules",
+      "name": "同阶段冲突识别",
+      "status": "passed",
+      "observed": "18/19日截止时间及20%/25%奖项比例形成2项候选冲突"
+    },
+    {
+      "id": "BR-023",
+      "area": "rules",
+      "name": "冲突原文追溯",
+      "status": "passed",
+      "observed": "可打开对应全文与高亮位置"
+    },
+    {
+      "id": "BR-024",
+      "area": "rules",
+      "name": "阶段隔离",
+      "status": "passed",
+      "observed": "补充通知改为国赛后省赛冲突为0，恢复省赛后为2"
+    },
+    {
+      "id": "BR-025",
+      "area": "rules",
+      "name": "明确版本替代",
+      "status": "passed",
+      "observed": "确认新通知替代旧通知后冲突为0"
+    },
+    {
+      "id": "BR-026",
+      "area": "rules",
+      "name": "撤销版本替代",
+      "status": "passed",
+      "observed": "恢复无替代关系后冲突重新出现"
+    },
+    {
+      "id": "BR-027",
+      "area": "rules",
+      "name": "人数不满足",
+      "status": "passed",
+      "observed": "5人对2—4人要求显示按资料不满足"
+    },
+    {
+      "id": "BR-028",
+      "area": "rules",
+      "name": "人数满足",
+      "status": "passed",
+      "observed": "改为3人后显示按已识别人数条款满足"
+    },
+    {
+      "id": "BR-029",
+      "area": "rules",
+      "name": "普通本科B组条款",
+      "status": "passed",
+      "observed": "显示对应原文条款与核对依据"
+    },
+    {
+      "id": "BR-030",
+      "area": "rules",
+      "name": "撤销及重新确认",
+      "status": "passed",
+      "observed": "规则顺序仍保持原文顺序"
+    },
+    {
+      "id": "BR-031",
+      "area": "rules",
+      "name": "伪造规则摘录",
+      "status": "passed",
+      "observed": "拒绝保存，要求摘录逐字存在于原文"
+    },
+    {
+      "id": "BR-032",
+      "area": "rules",
+      "name": "合法规则修改",
+      "status": "passed",
+      "observed": "保存后重新待审阅，再确认成功"
+    },
+    {
+      "id": "BR-033",
+      "area": "rules",
+      "name": "真实AI规则提取",
+      "status": "passed",
+      "observed": "实际接口成功，出现待审阅规则；观察到11条含10条AI待审阅和1条本地回退"
+    },
+    {
+      "id": "BR-034",
+      "area": "materials",
+      "name": "合格README",
+      "status": "passed",
+      "observed": "包含必需章节，检查通过"
+    },
+    {
+      "id": "BR-035",
+      "area": "materials",
+      "name": "缺章节README",
+      "status": "passed",
+      "observed": "提示缺少技术架构、安装运行，不满足"
+    },
+    {
+      "id": "BR-036",
+      "area": "materials",
+      "name": "2页PDF预检",
+      "status": "passed",
+      "observed": "页数检查通过"
+    },
+    {
+      "id": "BR-037",
+      "area": "materials",
+      "name": "31页PDF预检",
+      "status": "passed",
+      "observed": "超过30页，不满足"
+    },
+    {
+      "id": "BR-038",
+      "area": "materials",
+      "name": "合格参数视频",
+      "status": "passed",
+      "observed": "浏览器读出301秒、1920×1080，参数检查通过"
+    },
+    {
+      "id": "BR-039",
+      "area": "materials",
+      "name": "不合格参数视频",
+      "status": "passed",
+      "observed": "5秒、640×360，不满足"
+    },
+    {
+      "id": "BR-040",
+      "area": "materials",
+      "name": "损坏视频",
+      "status": "passed",
+      "observed": "显示未检查及元数据无法读取"
+    },
+    {
+      "id": "BR-041",
+      "area": "materials",
+      "name": "重复材料合并",
+      "status": "passed",
+      "observed": "两份来源的相同技术文档要求合为1项；当时共4项"
+    },
+    {
+      "id": "BR-042",
+      "area": "materials",
+      "name": "可选材料标记",
+      "status": "passed",
+      "observed": "在线演示显示可选"
+    },
+    {
+      "id": "BR-043",
+      "area": "materials",
+      "name": "勾选进度",
+      "status": "passed",
+      "observed": "勾选视频后清单与侧栏一致为1/4、25%"
+    },
+    {
+      "id": "BR-044",
+      "area": "materials",
+      "name": "导出清单",
+      "status": "passed",
+      "observed": "下载Markdown含勾选、要求、来源、可选标记与2项冲突"
+    },
+    {
+      "id": "BR-045",
+      "area": "ai",
+      "name": "真实多工具问答",
+      "status": "passed",
+      "observed": "实际出现search_sources、check_eligibility、build_checklist调用及耗时"
+    },
+    {
+      "id": "BR-046",
+      "area": "ai",
+      "name": "回答引用跳转",
+      "status": "passed",
+      "observed": "引用[5]打开人数原文，字符位置19—34，引用可点击"
+    },
+    {
+      "id": "BR-047",
+      "area": "ai",
+      "name": "无答案问题",
+      "status": "passed",
+      "observed": "火星矿物问题提示没有相关证据，未虚构要求"
+    },
+    {
+      "id": "BR-048",
+      "area": "ai",
+      "name": "停止生成",
+      "status": "passed",
+      "observed": "请求可取消，页面恢复可发送状态"
+    },
+    {
+      "id": "BR-049",
+      "area": "responsive",
+      "name": "390像素问答导航",
+      "status": "passed",
+      "observed": "页面可打开，内容宽度380不超过390"
+    },
+    {
+      "id": "BR-050",
+      "area": "responsive",
+      "name": "390像素资料导航",
+      "status": "passed",
+      "observed": "页面可打开，内容宽度380不超过390"
+    },
+    {
+      "id": "BR-051",
+      "area": "responsive",
+      "name": "390像素清单导航",
+      "status": "passed",
+      "observed": "页面可打开，内容宽度380不超过390"
+    },
+    {
+      "id": "BR-052",
+      "area": "responsive",
+      "name": "390像素规则导航",
+      "status": "passed",
+      "observed": "页面可打开，内容宽度380不超过390"
+    },
+    {
+      "id": "BR-053",
+      "area": "responsive",
+      "name": "390像素工作台导航",
+      "status": "passed",
+      "observed": "页面可打开，内容宽度380不超过390"
+    },
+    {
+      "id": "BR-054",
+      "area": "responsive",
+      "name": "390像素赛事弹窗",
+      "status": "passed",
+      "observed": "宽362，无水平溢出"
+    },
+    {
+      "id": "BR-055",
+      "area": "degraded",
+      "name": "无密钥检索",
+      "status": "passed",
+      "observed": "独立3003端口显示未配置密钥，原文检索仍可使用"
+    },
+    {
+      "id": "BR-056",
+      "area": "degraded",
+      "name": "无密钥规则提取",
+      "status": "passed",
+      "observed": "本地提取22条规则，不依赖模型"
+    },
+    {
+      "id": "BR-057",
+      "area": "degraded",
+      "name": "模型连接失败",
+      "status": "passed",
+      "observed": "独立3004端口明确提示模型或工具暂不可用，并保留原文片段与引用"
+    },
+    {
+      "id": "BR-058",
+      "area": "usability",
+      "name": "本次执行记录混入前一轮工具日志",
+      "status": "failed",
+      "issueId": "F01",
+      "observed": "前一轮check_eligibility/build_checklist仍在列表内，记录数随轮次累计"
+    },
+    {
+      "id": "BR-059",
+      "area": "usability",
+      "name": "自定义操作确认框无法按Escape关闭",
+      "status": "failed",
+      "issueId": "F02",
+      "observed": "弹窗仍可见；点击取消正常关闭"
+    }
+  ],
+  "issues": [
+    {
+      "id": "F01",
+      "priority": "P2",
+      "title": "本次执行记录混入前一轮工具日志",
+      "steps": [
+        "完成一次包含人数核对及清单工具的真实问答",
+        "再发送没有证据的另一个问题",
+        "展开本次执行记录"
+      ],
+      "expected": "仅显示当前消息关联的工具和执行事件",
+      "actual": "前一轮check_eligibility/build_checklist仍在列表内，记录数随轮次累计",
+      "location": "app/page.tsx:221",
+      "cause": "日志展示遍历整个data数组，缺少当前消息ID过滤",
+      "recommendation": "将事件关联messageId，并仅展示当前轮次；增加连续两轮浏览器复测"
+    },
+    {
+      "id": "F02",
+      "priority": "P2",
+      "title": "自定义操作确认框无法按Escape关闭",
+      "steps": [
+        "在合成测试资料或赛事上点击删除",
+        "确认操作弹窗出现后按Escape"
+      ],
+      "expected": "关闭弹窗并保留对象、恢复焦点",
+      "actual": "弹窗仍可见；点击取消正常关闭",
+      "location": "app/page.tsx:70",
+      "cause": "Escape监听只清理modal和selected，没有清理confirmAsk",
+      "recommendation": "统一弹窗Escape关闭及焦点恢复逻辑，复测键盘取消和确认删除"
+    }
+  ],
+  "notTested": [
+    "旧版IndexedDB数据库真实迁移及迁移失败恢复（本轮仅验证新版刷新持久化）",
+    "文档提示注入专项浏览器攻击与全部跨阶段边界组合",
+    "Chrome/Edge独立正式浏览器、Firefox、Safari及真机移动端",
+    "并发压力、长时间稳定性、网络超时所有分支及服务端非法请求矩阵",
+    "完整键盘焦点循环与屏幕阅读器读屏验收",
+    "视频内容、普通话音轨与提交成片验收；本轮合成视频仅验证参数读取",
+    "公网部署及GitHub上传权限、仓库历史与密钥专项扫描",
+    "原计划12题真实模型A/B评测（本轮真实模型交互不替代固定评测集）"
+  ],
+  "artifacts": {
+    "fixtures": "tmp/browser-regression-20261117/",
+    "exportedChecklist": "D:\\web competition\\project\\submission\\evaluation\\browser-regression-assets-20261117\\exported-checklist.md",
+    "screenshots": "在浏览器工具中观察；未导出截图或录屏文件"
+  },
+  "dataSafety": "仅操作独立合成测试工作区；原我的赛事保留。测试B与测试PDF在确认删除测试中移除；测试A保留供复现。",
+  "api": "当前本地密钥实际支持问答和规则提取，无需补充新密钥；未读取或写入报告密钥值。",
+  "sourceSha256": {
+    "app/page.tsx": "f222f81c24fb15f1dbd844f1b1476e05550bd9a31ecee4d778f64e97629a83b2",
+    "app/api/chat/route.ts": "2a67c9185593c3344bc1278df1c4457657fbaf566a08993e2a10efeffc888d90",
+    "app/api/analyze/route.ts": "cf17788a4a33fc17a8065ab6b29fe505297d1fe125ae4d9228324d9d0143e2da",
+    "app/api/status/route.ts": "4ef1eeb79a802f679511f120e9d51850475c75183d2635625c9b03c188123b29",
+    "package.json": "5a3411ec3842a64c24bdf6a4692d03a9c1b43ea0033ea3b820502b3a784d8aea",
+    "pnpm-lock.yaml": "5bf31c9655edcd7f101a07fc4987ddecbf34c5b1380b52b1b726c51bb2d21725"
+  },
+  "notes": [
+    "首次PDF冷加载等待较长，最终成功；未测量稳定的性能指标。",
+    "开发模式Next工具浮层曾遮住移动端首个导航，生产构建下五个导航均正常。",
+    "取消生成后曾看到空助手气泡和证据标签残留，未作为阻断项；建议后续改善。",
+    "未修改应用逻辑、未创建Git提交或上传仓库。"
+  ]
+}

@@ -6,16 +6,18 @@
 
 ## 安装运行
 
-要求Node.js 22.2或更高版本、pnpm，依赖以锁文件为准。
+要求Node.js 22.2或更高版本、pnpm，依赖以锁文件为准。先在PowerShell中进入项目目录（包含package.json），再运行以下命令。
 
 ```powershell
 pnpm install --frozen-lockfile
 Copy-Item .env.example .env.local
-# 编辑 .env.local 填写 DEEPSEEK_API_KEY，不要提交真实密钥
+# 默认AI_ENABLED=false，无需Key。不要提交真实密钥。
 pnpm dev
 ```
 
-访问终端打印的本地地址。无密钥时使用明确标注的原文检索模式，仍可进行本地规则核对与清单操作。
+访问终端打印的本地地址。默认无Key降级模式：问答仅返回检索原文，规则用本地解析器；资料、条件核对、冲突提示、材料预检和清单均可使用。无需创建.env.local，也不会向外部模型发送资料。
+
+可选模型增强：在本机.env.local中设置AI_ENABLED=true并填写自己的DEEPSEEK_API_KEY，重启后才启用；MODEL_ID默认deepseek-chat，可选DEEPSEEK_BASE_URL。聊天和规则提取共用配置。即使环境中存在密钥，只要没有显式启用也不调用模型。模型调用会产生供应商费用；不要把密钥提交给GitHub。
 
 ```powershell
 pnpm verify
@@ -69,4 +71,15 @@ IndexedDB从v1迁移到v2，旧`current`键留作备份，新数据写`library-v
 - 视频：配音、字幕、分镜在`submission/video/`；**最终MP4完成情况以status.json为准**。
 - 提交检查：`submission/SUBMISSION_CHECKLIST.md`。
 
-GitHub/Gitee远程仓库尚未创建，正式提交前须上传完整Git历史并提供Public或评审访问权限。本次不包含公网演示；赛事时间依据用户提供资料，尚未经官网核验。
+公开评审仓库计划为 https://github.com/ljh06520/saizhixing ，上传状态见submission/RELEASE_NOTES_2026-11-17.md。本次不包含公网演示；赛事时间依据用户提供资料，尚未经官网核验。
+
+
+## 2026-11-17修复与当前交付状态
+
+- 本次执行记录按消息ID过滤，前一轮工具日志不再混入当前轮；历史回答引用仍保留。
+- 删除确认框支持Escape取消，取消不执行删除；点击弹窗内容不会误触背景关闭。
+- 默认无Key模式，界面明确标注本地提取及数据传输边界。取消请求后不保留空助手气泡。
+- 浏览器原回归报告记录57/59通过与两项缺陷；修复复测单独记录，保留历史结果。
+- 既有PDF、模型评测、配音与字幕是带日期的历史材料，不代表本次版本已重新完成全部评测。最终MP4仍未完成；尚不能标为正式比赛材料齐全。
+
+GitHub只包含源码、锁文件、配置模板、测试与文档素材；node_modules、.next、真实.env.local、测试大文件和本地日志均不上传。首次运行请安装依赖，不要直接执行pnpm start而跳过构建。

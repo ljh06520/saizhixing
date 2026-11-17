@@ -32,3 +32,8 @@ __pycache__/
 /submission/source/
 /submission/*技术包*.zip
 /submission/manifest.json
+/dist-share/
+
+# Local run logs and backups
+*.log
+.env.backup*

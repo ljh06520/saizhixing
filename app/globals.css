@@ -1,4 +1,4 @@
-
+﻿
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -873,6 +873,30 @@ h1,h2,h3,p {
   background: #7b96e9;
   border-radius: 2px
 }
+/* 准备进度：点击整块展开待准备清单，下方区块顺次下移 */
+.prep-head { cursor: pointer; border-radius: 6px; }
+.prep-head:hover .prep-count { color: #5b78e0; }
+.prep-head:focus-visible { outline: 2px solid #9db0ee; outline-offset: 3px; }
+.prep-count { display: inline-flex; align-items: center; gap: 5px; color: #8b97e8; }
+.prep-count .chev {
+  width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor; transition: transform .18s
+}
+.prep-count .chev.up { transform: rotate(180deg); }
+.prep-pop {
+  margin-top: 12px;
+  background: #fafcff;
+  border: 1px solid #e8edf5;
+  border-radius: 10px;
+  padding: 12px 13px;
+  animation: appear .16s ease
+}
+.prep-pop-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: #51688f; }
+.prep-pop ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.prep-pop li { border-left: 2px solid #dfe7f5; padding-left: 9px; }
+.prep-pop li span { display: block; font-size: 11px; color: #51688f; }
+.prep-pop li small { display: block; margin-top: 3px; font-size: 10px; line-height: 1.6; color: #98a3b8; }
+.prep-empty { margin: 0; font-size: 11px; color: #98a3b8; }
 .rule-alert,.rule-neutral {
   padding: 15px 13px;
   border: 1px solid #f2e7d5;
@@ -978,8 +1002,14 @@ h1,h2,h3,p {
   font-size: 9px;
   color: #bcc4d1
 }
+/* 执行记录默认收纳，点标题展开，长列表内部滚动 */
+.exec-toggle { width: 100%; border: 0; background: none; padding: 0; font: inherit; cursor: pointer; margin-bottom: 0; text-align: left; }
+.exec-toggle .exec-count { color: #8b97e8; }
+.exec-toggle[aria-expanded="true"] { margin-bottom: 10px; }
 .execution-log {
   margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
   padding-left: 14px;
   font-size: 10px;
   color: #8495b3;
@@ -2321,3 +2351,32 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
 }
+
+/* 赛事工作区表单：新建与编辑共用一个对话框 */
+.space-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.space-row .field-label { margin: 12px 0 0; }
+.segment { display: flex; gap: 4px; margin-top: 7px; }
+.segment button { border: 1px solid #dfe7f5; background: #fafcff; color: #6f84a9; border-radius: 6px; padding: 7px 14px; font-size: 12px; cursor: pointer; }
+.segment button[aria-pressed="true"] { border-color: #3a65ec; background: #eef3ff; color: #2746a8; font-weight: 550; }
+.space-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.space-actions { display: flex; gap: 8px; }
+.field-error { display: block; margin-top: 5px; font-size: 11px; color: #c0573f; }
+@media (max-width: 520px) { .space-row { grid-template-columns: 1fr; } }
+.space-confirm { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #94a3ba; }
+.space-row + .modal-subtitle { margin-top: 22px; }
+/* 回答模式提示：未配置密钥时说明降级行为，而不是让提示混进回答正文 */
+.mode-note { display: flex; align-items: flex-start; gap: 8px; margin: 0 0 14px; padding: 9px 12px; border: 1px solid #ffe0bf; background: #fff9f1; color: #8a6a3f; border-radius: 8px; font-size: 12px; line-height: 1.6; }
+.mode-note.ai { border-color: #d9e6ff; background: #f4f8ff; color: #4d6a97; }
+.mode-note svg { flex: 0 0 auto; margin-top: 2px; }
+.mode-note code { background: #fff; border: 1px solid #eadcc6; border-radius: 4px; padding: 0 4px; font-size: 11px; }
+/* 应用内确认框：替代 window.confirm */
+.confirm-card { width: 400px; }
+.confirm-title { margin: 0 0 10px; font-size: 15px; font-weight: 550; color: #51688f; }
+.confirm-text { margin: 0 0 20px; font-size: 13px; line-height: 1.7; color: #6f84a9; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.button.danger-solid { background: #b9554f; border: 1px solid #a94b45; color: #fff; }
+.button.danger-solid:hover { background: #a44a44; }
+/* 规则确认后保持原位并显示勾选，避免卡片跳动让人以为消失了 */
+.button.confirmed { background: #eef7f0; border: 1px solid #b6dcbd; color: #3f7a4f; }
+.button.confirmed:hover { background: #e3f2e7; }
+.mode-note.ai code { border-color: #d9e6ff; }
