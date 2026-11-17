@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-17",
+  "repository": "https://github.com/ljh06520/saizhixing",
+  "public": true,
+  "defaultBranch": "main",
+  "verifiedSourceCommit": "f721d2dc49ae6fba94d212e6b4f8cd363d64c8ca",
+  "sourceCommitCountIncludingPriorHistory": 8,
+  "githubVerify": {
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/ljh06520/saizhixing/actions/runs/44013429338"
+  },
+  "excluded": [
+    ".env.local",
+    "node_modules",
+    ".next",
+    "本地浏览器数据库",
+    "临时测试大文件",
+    "调试日志"
+  ],
+  "formalSubmissionReady": false,
+  "remaining": [
+    "最终参赛MP4未完成",
+    "参见提交检查表与测试范围说明"
+  ]
+}

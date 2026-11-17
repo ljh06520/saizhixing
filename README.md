@@ -71,7 +71,7 @@ IndexedDB从v1迁移到v2，旧`current`键留作备份，新数据写`library-v
 - 视频：配音、字幕、分镜在`submission/video/`；**最终MP4完成情况以status.json为准**。
 - 提交检查：`submission/SUBMISSION_CHECKLIST.md`。
 
-公开评审仓库计划为 https://github.com/ljh06520/saizhixing ，上传状态见submission/RELEASE_NOTES_2026-11-17.md。本次不包含公网演示；赛事时间依据用户提供资料，尚未经官网核验。
+公开评审仓库为 https://github.com/ljh06520/saizhixing ，上传状态见submission/RELEASE_NOTES_2026-11-17.md。本次不包含公网演示；赛事时间依据用户提供资料，尚未经官网核验。
 
 
 ## 2026-11-17修复与当前交付状态
