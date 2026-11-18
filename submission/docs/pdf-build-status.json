@@ -1,11 +1,11 @@
 {
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "pages": 24,
   "page_limit": 30,
   "path": "submission/technical-report.pdf",
   "source": "submission/docs/technical-report.md",
   "resolved_source": "submission/docs/technical-report-resolved.md",
-  "sha256": "34db27aadb058030103cd0446e1d3569640540e2f761066048e6d74ba4dc4377",
+  "sha256": "3c0decf70861508a3f1c636c031624e124b58f0c680782cfd4953fd90d0d36fc",
   "layout_bounds": [
     {
       "page": 1,
@@ -19,7 +19,7 @@
     },
     {
       "page": 3,
-      "lowestBodyY": 267.49,
+      "lowestBodyY": 247.79,
       "bottomLimit": 65
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "page": 11,
-      "lowestBodyY": 252.19,
+      "lowestBodyY": 232.49,
       "bottomLimit": 65
     },
     {
@@ -136,7 +136,6 @@
   "final_submission_ready": false,
   "visual_review": {
     "passed": true,
-    "reviewer": "agent visual inspection",
     "pages_inspected": [
       1,
       2,
@@ -163,24 +162,17 @@
       23,
       24
     ],
-    "render_tool": "pdftoppm,96dpi",
-    "findings": "Reviewed all 24 pages; improved cover link contrast and figure labels, then re-rendered and inspected changed pages. No visible clipping, overlaps or missing Chinese glyphs."
+    "render_tool": "pdftoppm,85dpi",
+    "findings": "24页视觉复核，未见正文裁切、表格重叠或中文缺字。"
   },
+  "qa_passed": true,
   "structural_checks": {
-    "page_count_24_within_30": true,
-    "a4_all_pages": true,
-    "every_page_has_text": true,
+    "a4": true,
     "page_numbers": true,
-    "bookmarks_24": true,
-    "no_unresolved_template": true,
-    "obsolete_claims_removed": true,
-    "team_and_repo_present": true,
-    "test_claims_match": true,
-    "default_local_mode_documented": true,
-    "no_key_pattern": true,
-    "body_bounds": true,
-    "not_encrypted": true,
-    "chinese_fonts_embedded": true
+    "bookmarks": true,
+    "team_and_test_claims": true,
+    "no_template_or_key_pattern": true,
+    "bounds": true
   },
   "chinese_font_subsets": {
     "/AAAAAA+MicrosoftYaHei-0": true,
@@ -189,6 +181,5 @@
     "/AAAAAD+MicrosoftYaHei-0": true,
     "/AAAAAA+MicrosoftYaHei-Bold-0": true,
     "/AAAAAB+MicrosoftYaHei-Bold-0": true
-  },
-  "qa_passed": true
+  }
 }

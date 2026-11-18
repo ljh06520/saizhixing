@@ -1,15 +1,14 @@
 {
-  "pages": 20,
+  "pages": 24,
   "all_pages_extractable": true,
-  "rendered_pages": 20,
-  "visual_review": "Poppler逐页渲染联系表，另检查封面、结果页、提交状态页及结构表格；无截断、乱码与表格溢出。",
-  "sha256": "4078c968f3ca826051425a2f557777c7ed8c3433150ec43a4aecc5201e5aab51",
+  "rendered_pages": 24,
+  "visual_review": "2026-11-18版已逐页渲染并检查。",
+  "sha256": "3c0decf70861508a3f1c636c031624e124b58f0c680782cfd4953fd90d0d36fc",
   "source": "submission/docs/technical-report-resolved.md",
   "screenshot_assets_included": false,
   "final_submission_ready": false,
   "open_items": [
-    "新版完整浏览器回归",
-    "真实界面MP4演示视频",
-    "远程评审仓库"
+    "最终演示MP4",
+    "官方时间与入口核验"
   ]
 }

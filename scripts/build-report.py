@@ -235,7 +235,7 @@ def main():
     import hashlib
     publication=load_record(ROOT/'submission/evaluation/github-publication-2026-11-17.json') or {}
     retest=load_record(ROOT/'submission/evaluation/fix-retest-2026-11-17.json') or {}
-    status={'date':'2026-11-17','pages':len(reader.pages),'page_limit':30,'path':'submission/technical-report.pdf','source':'submission/docs/technical-report.md','resolved_source':'submission/docs/technical-report-resolved.md','sha256':hashlib.sha256(output.read_bytes()).hexdigest(),'layout_bounds':LAYOUT_BOUNDS,'team_metadata_complete':True,'review_repository_ready':publication.get('public') is True,'targeted_fix_retest_passed':retest.get('passed') is True,'full_browser_matrix_complete':False,'demo_mp4_complete':False,'final_submission_ready':False,'visual_review':'pending; rendering and page inspection required'}
+    status={'date':'2026-11-18','pages':len(reader.pages),'page_limit':30,'path':'submission/technical-report.pdf','source':'submission/docs/technical-report.md','resolved_source':'submission/docs/technical-report-resolved.md','sha256':hashlib.sha256(output.read_bytes()).hexdigest(),'layout_bounds':LAYOUT_BOUNDS,'team_metadata_complete':True,'review_repository_ready':publication.get('public') is True,'targeted_fix_retest_passed':retest.get('passed') is True,'full_browser_matrix_complete':False,'demo_mp4_complete':False,'final_submission_ready':False,'visual_review':'pending; rendering and page inspection required'}
     (ROOT/'submission/docs/pdf-build-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(status,ensure_ascii=False))
 
