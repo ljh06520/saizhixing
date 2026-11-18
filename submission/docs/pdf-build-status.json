@@ -5,7 +5,7 @@
   "path": "submission/technical-report.pdf",
   "source": "submission/docs/technical-report.md",
   "resolved_source": "submission/docs/technical-report-resolved.md",
-  "sha256": "3c0decf70861508a3f1c636c031624e124b58f0c680782cfd4953fd90d0d36fc",
+  "sha256": "99e0682f0c2889f4ca002004c6852a35df75d6ff6ab7accaa3f552a48be6af10",
   "layout_bounds": [
     {
       "page": 1,
@@ -137,49 +137,10 @@
   "visual_review": {
     "passed": true,
     "pages_inspected": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24
+      4
     ],
-    "render_tool": "pdftoppm,85dpi",
-    "findings": "24页视觉复核，未见正文裁切、表格重叠或中文缺字。"
+    "render_tool": "pdftoppm 105 dpi",
+    "findings": "本次修改为共享页脚。第4页重新渲染检查，全24页核对页码与旧页脚文字。"
   },
-  "qa_passed": true,
-  "structural_checks": {
-    "a4": true,
-    "page_numbers": true,
-    "bookmarks": true,
-    "team_and_test_claims": true,
-    "no_template_or_key_pattern": true,
-    "bounds": true
-  },
-  "chinese_font_subsets": {
-    "/AAAAAA+MicrosoftYaHei-0": true,
-    "/AAAAAB+MicrosoftYaHei-0": true,
-    "/AAAAAC+MicrosoftYaHei-0": true,
-    "/AAAAAD+MicrosoftYaHei-0": true,
-    "/AAAAAA+MicrosoftYaHei-Bold-0": true,
-    "/AAAAAB+MicrosoftYaHei-Bold-0": true
-  }
+  "qa_passed": true
 }

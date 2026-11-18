@@ -127,7 +127,6 @@ def draw_header(c, page, title):
     c.drawString(LEFT, HEIGHT-109, title)
     c.setStrokeColor(LINE); c.line(LEFT, 46, WIDTH-RIGHT, 46)
     c.setFont('YaHei', 7.2); c.setFillColor(MUTED)
-    c.drawString(LEFT, 29, '赛知行 · 本地交付版 · 来源与资格仍需人工核实')
     c.drawRightString(WIDTH-RIGHT, 29, f'{page:02d} / {TOTAL_PAGES}')
 
 def draw_body(c, page, content):

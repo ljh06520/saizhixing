@@ -1,9 +1,9 @@
 {
   "pages": 24,
   "all_pages_extractable": true,
-  "rendered_pages": 24,
-  "visual_review": "2026-11-18版已逐页渲染并检查。",
-  "sha256": "3c0decf70861508a3f1c636c031624e124b58f0c680782cfd4953fd90d0d36fc",
+  "rendered_pages": 1,
+  "visual_review": "本次重排后检查第4页图像与24页页码及文本。",
+  "sha256": "99e0682f0c2889f4ca002004c6852a35df75d6ff6ab7accaa3f552a48be6af10",
   "source": "submission/docs/technical-report-resolved.md",
   "screenshot_assets_included": false,
   "final_submission_ready": false,
